@@ -1,0 +1,75 @@
+import {
+  Home,
+  Login,
+  Dashboard,
+  ArticleList,
+  ArticleEdit,
+  User,
+  Power,
+  Role,
+  Other,
+  NotFound,
+  Notification
+} from '../views'
+const mainRoutes = [
+  {
+    pathname:'/login',
+    component:Login
+  },
+  {
+    pathname:'/admin',
+    component:Home
+  },
+  {
+    pathname:'/404',
+    component:NotFound
+  }
+]
+const adminRoutes = [
+  {
+    pathname:'/admin/dashboard',
+    component:Dashboard
+  },
+  {
+    pathname:'/admin/article',
+    children:[
+      {
+        pathname:'/admin/article/articlelist',
+        component:ArticleList
+      },
+      {
+        pathname:'/admin/article/edit',
+        component:ArticleEdit
+      }
+    ]
+  },
+  {
+    pathname:'/admin/settings',
+    children:[
+      {
+        pathname:'/admin/settings/role',
+        component:Role
+      },
+      {
+        pathname:'/admin/settings/user',
+        component:User
+      },
+      {
+        pathname:'/admin/settings/power',
+        component:Power
+      }
+    ]
+  },
+  {
+    pathname:'/admin/other',
+    component:Other
+  },
+  {
+    pathname:'/admin/notification',
+    component:Notification
+  }
+]
+export {
+  mainRoutes,
+  adminRoutes
+}
