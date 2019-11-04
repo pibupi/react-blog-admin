@@ -1,0 +1,4 @@
+export default {
+  GET_MENU_LIST:'GET_MENU_LIST',
+  CHANGE_OPENKEYS:'CHANGE_OPENKEYS'
+}

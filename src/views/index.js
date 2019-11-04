@@ -1,5 +1,6 @@
 import Loadable from 'react-loadable'
 import Loading from '../components/Loading'
+// 路由懒加载
 const Home = Loadable({
   loader:()=>import('./Home'),
   loading:Loading

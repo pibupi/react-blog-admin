@@ -1,8 +1,33 @@
 import React, { Component } from 'react';
 import {Route,Switch,Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {adminRoutes} from './routes'
 import {Home} from './views'
+import {getmenulist} from './actions/menuAction'
+const mapState = state => ({
+  menulist:state.menus.menulist
+})
+@connect(mapState,{getmenulist})
+
 class App extends Component {
+  componentWillMount(){
+    let routes = JSON.parse(JSON.stringify(adminRoutes))
+    const menus = this.getMenus(routes)
+    this.props.getmenulist(menus)
+  }
+  getMenus = (adminRoutes) => {
+    for(let i = 0;i<adminRoutes.length;i++){
+      if(!adminRoutes[i].children){
+        if(!adminRoutes[i].isNav){
+          adminRoutes.splice(i,1)
+        }
+      }else{
+          this.getMenus(adminRoutes[i].children)
+      }
+    }
+    return adminRoutes
+  }
+  // 利用递归渲染动态路由
   renderRoute = (adminRoutes) => {
     return adminRoutes.map(route=>{
         if(!route.children){

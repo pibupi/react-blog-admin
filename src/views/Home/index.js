@@ -4,6 +4,7 @@ import {
   PubFooter,
   PubSideBar
 } from '../../components'
+import './home.less'
 import { Layout} from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
