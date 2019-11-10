@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Dropdown, Icon ,Avatar,Badge } from 'antd';
 import  {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {logOut} from '../../actions/menuAction'
+import {logOut} from '../../actions/userAction'
 import Logo from '../../assets/images/logo.png'
 import './pubheader.less'
 
