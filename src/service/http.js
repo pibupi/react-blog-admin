@@ -5,7 +5,7 @@ import {localGettoken} from '../utils/storage'
 // import NProgress from 'nprogress'
 
 const $http = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://rap2api.taobao.org/app/mock/234823' : '', // api的base_url
+  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '', // api的base_url
   timeout: 20000 // 请求超时时间
 })
 
@@ -14,7 +14,8 @@ let timer
 //拦截请求
 $http.interceptors.request.use(
   config => {
-    const token = localGettoken('authToken')
+    const token = localGettoken('token')
+    console.log(token)
     if (token) {
       config.headers.common['Authorization'] = 'Bearer ' + token
     }
@@ -28,7 +29,11 @@ $http.interceptors.request.use(
 //拦截响应
 $http.interceptors.response.use(
   response => {
-    if (response.data.code !== 200) {
+    if (response.status !== 200) {
+      // 获取更新的token
+      const { Authorization } = response.headers;
+      //如果token存在则存在localStorage
+      Authorization && localStorage.setItem('token', Authorization);
       response.data.message && message.warning(response.data.message)
       console.log(response.data)
       return Promise.reject(response.data)

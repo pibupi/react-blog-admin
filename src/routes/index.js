@@ -1,6 +1,7 @@
 import {
   Home,
   Login,
+  Register,
   Dashboard,
   ArticleList,
   ArticleEdit,
@@ -16,6 +17,10 @@ const mainRoutes = [
   {
     pathname:'/login',
     component:Login
+  },
+  {
+    pathname:'/register',
+    component:Register
   },
   {
     pathname:'/admin',

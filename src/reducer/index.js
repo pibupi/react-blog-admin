@@ -3,5 +3,5 @@ import menus from './menus'
 import user from './user'
 export default combineReducers({
   menus,
-  user
+  user,
 })

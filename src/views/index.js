@@ -9,6 +9,10 @@ const Login = Loadable({
   loader:()=>import('./Login'),
   loading:Loading
 })
+const Register = Loadable({
+  loader:()=>import('./Register'),
+  loading:Loading
+})
 const Dashboard = Loadable({
   loader:()=>import('./Dashboard'),
   loading:Loading
@@ -48,6 +52,7 @@ const Notification = Loadable({
 export {
   Home,
   Login,
+  Register,
   Dashboard,
   ArticleList,
   ArticleEdit,

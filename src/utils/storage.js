@@ -1,20 +1,20 @@
 const localSavetoken = (token)=>{
-  localStorage.setItem('authToken',JSON.stringify(token))
+  localStorage.setItem('token',JSON.stringify(token))
 }
 const localGettoken = ()=>{
-  return JSON.parse(localStorage.getItem('authToken'))
+  return JSON.parse(localStorage.getItem('token'))
 }
 const localRemovetoken = ()=>{
-  localStorage.removeItem('authToken')
+  localStorage.removeItem('token')
 }
 const sessionSavetoken = (token) => {
-  sessionStorage.setItem('authToken',JSON.stringify(token))
+  sessionStorage.setItem('token',JSON.stringify(token))
 }
 const sessionGettoken = () => {
-  return JSON.parse(sessionStorage.getItem('authToken') || {})
+  return JSON.parse(sessionStorage.getItem('token') || {})
 }
 const sessionRemovetoken = () => {
-  sessionStorage.removeItem('authToken')
+  sessionStorage.removeItem('token')
 }
 const localSaveuserInfo = (userInfo)=>{
   localStorage.setItem('userInfo',JSON.stringify(userInfo))
