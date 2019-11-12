@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LeftNav from './left_nav'
+import LeftNav from './left_nav';
 class SideBar extends Component {
   render() {
     return (
