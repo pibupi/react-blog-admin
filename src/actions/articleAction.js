@@ -22,3 +22,43 @@ export const getArticleList = userInfo => {
     }
   };
 };
+export const addArticleList = article => {
+  return async dispatch => {
+    try {
+      const { code, msg } = await $http.post(
+        '/api/v1/article/addArticle',
+        article
+      );
+      if (code === 0) {
+        message.success(msg)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const updateArticle = article => {
+  return async dispatch => {
+    try {
+      const { code, msg } = await $http.post('/api/v1/article/update', article);
+      if(code === 0){
+        message.success(msg)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const deleteArticle = id => {
+  return async dispatch => {
+    try{
+      const {code,msg} = await $http.post('/api/v1/article/delete',{id})
+      if(code === 0){
+        message.success(msg)
+        dispatch(getArticleList())
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+}
