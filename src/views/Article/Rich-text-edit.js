@@ -75,7 +75,9 @@ class RichTextEdit extends Component {
           editorStyle={{
             border: '1px solid #000',
             minHeight: 200,
-            paddingLeft: 10
+            paddingLeft: 10,
+            width:'80%',
+            marginLeft:20
           }}
           onEditorStateChange={this.onEditorStateChange}
           toolbar={{

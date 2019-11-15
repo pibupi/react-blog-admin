@@ -11,3 +11,9 @@ export const changeopenkeys = payload => {
     payload
   };
 };
+export const switchMenu = payload => {
+  return {
+    type: actionTypes.SWITCH_MENU,
+    payload
+  };
+};

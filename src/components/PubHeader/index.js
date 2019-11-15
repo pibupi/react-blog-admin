@@ -9,12 +9,9 @@ import './pubheader.less';
 const mapState = state => ({
   displayName: state.user.displayName
 });
-@connect(
-  mapState,
-  {
-    logOut
-  }
-)
+@connect(mapState, {
+  logOut
+})
 @withRouter
 class Header extends Component {
   onClick = ({ key }) => {

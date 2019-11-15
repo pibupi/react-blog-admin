@@ -9,10 +9,7 @@ const mapState = state => ({
   menulist: state.menus.menulist,
   openKeys: state.menus.openKeys
 });
-@connect(
-  mapState,
-  { changeopenkeys }
-)
+@connect(mapState, { changeopenkeys })
 @withRouter
 class LeftNav extends Component {
   onOpenChange = openKeys => {

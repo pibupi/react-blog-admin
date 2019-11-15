@@ -1,7 +1,8 @@
 import actionTypes from '../actions/actionTypes';
 let initState = {
   menulist: [],
-  openKeys: []
+  openKeys: [],
+  menuName:'首页'
 };
 export default (preState = initState, action) => {
   let newState = {
@@ -13,6 +14,9 @@ export default (preState = initState, action) => {
       return newState;
     case actionTypes.CHANGE_OPENKEYS:
       newState.openKeys = action.payload;
+      return newState;
+    case actionTypes.SWITCH_MENU:
+      newState.menuName = action.payload;
       return newState;
     default:
       return preState;
