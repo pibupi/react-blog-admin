@@ -7,12 +7,19 @@ const getArticleListSucccess = payload => {
     payload
   };
 };
-export const getArticleList = userInfo => {
+export const getArticleList = (offset, limited, keywords) => {
+  keywords = keywords ? keywords : '';
   return async dispatch => {
     try {
-      const { code, data, msg } = await $http.get('/api/v1/article/list');
+      const {
+        code,
+        data: { rows, count },
+        msg
+      } = await $http.get(
+        `/api/v1/article/list?offset=${offset}&limited=${limited}&keywords=${keywords}`
+      );
       if (code === 0) {
-        dispatch(getArticleListSucccess({ data, msg }));
+        dispatch(getArticleListSucccess({ rows, msg, count }));
         message.success(msg);
       } else {
         message.warning(msg);
@@ -30,7 +37,7 @@ export const addArticleList = article => {
         article
       );
       if (code === 0) {
-        message.success(msg)
+        message.success(msg);
       }
     } catch (err) {
       console.log(err);
@@ -41,8 +48,8 @@ export const updateArticle = article => {
   return async dispatch => {
     try {
       const { code, msg } = await $http.post('/api/v1/article/update', article);
-      if(code === 0){
-        message.success(msg)
+      if (code === 0) {
+        message.success(msg);
       }
     } catch (err) {
       console.log(err);
@@ -51,14 +58,14 @@ export const updateArticle = article => {
 };
 export const deleteArticle = id => {
   return async dispatch => {
-    try{
-      const {code,msg} = await $http.post('/api/v1/article/delete',{id})
-      if(code === 0){
-        message.success(msg)
-        dispatch(getArticleList())
+    try {
+      const { code, msg } = await $http.post('/api/v1/article/delete', { id });
+      if (code === 0) {
+        message.success(msg);
+        dispatch(getArticleList());
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
-}
+  };
+};

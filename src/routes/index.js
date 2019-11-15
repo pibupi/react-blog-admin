@@ -39,7 +39,7 @@ const adminRoutes = [
     icon: 'dashboard',
     component: Dashboard,
     isNav: true,
-    key: 'dashboard'
+    key: '/admin/dashboard'
   },
   {
     pathname: '/admin/article',
@@ -47,7 +47,7 @@ const adminRoutes = [
     icon: 'unordered-list',
     exact: true,
     isNav: true,
-    key: 'article',
+    key: '/admin/article',
     children: [
       {
         pathname: '/admin/article/articlelist',
@@ -55,7 +55,7 @@ const adminRoutes = [
         title: '文章列表',
         icon: 'ordered-list',
         isNav: true,
-        key: 'articlelist'
+        key: '/admin/article/articlelist'
       },
       {
         pathname: '/admin/article/edit',
@@ -63,7 +63,7 @@ const adminRoutes = [
         title: '文章编辑',
         icon: 'edit',
         isNav: true,
-        key: 'edit'
+        key: '/admin/article/edit'
       }
     ]
   },
@@ -73,7 +73,7 @@ const adminRoutes = [
     icon: 'setting',
     exact: true,
     isNav: true,
-    key: 'settings',
+    key: '/admin/settings',
     children: [
       {
         pathname: '/admin/settings/role',
@@ -81,7 +81,7 @@ const adminRoutes = [
         title: '角色管理',
         icon: 'smile',
         isNav: true,
-        key: 'role'
+        key: '/admin/settings/role'
       },
       {
         pathname: '/admin/settings/user',
@@ -89,7 +89,7 @@ const adminRoutes = [
         title: '用户管理',
         icon: 'user',
         isNav: true,
-        key: 'user'
+        key: '/admin/settings/user'
       },
       {
         pathname: '/admin/settings/power',
@@ -97,7 +97,7 @@ const adminRoutes = [
         title: '权限管理',
         icon: 'phone',
         isNav: true,
-        key: 'power'
+        key: '/admin/settings/power'
       }
     ]
   },
@@ -107,13 +107,13 @@ const adminRoutes = [
     title: '其他',
     icon: 'more',
     isNav: true,
-    key: 'other'
+    key: '/admin/other'
   },
   {
     pathname: '/admin/notification',
     component: Notification,
     isNav: false,
-    key: 'notification'
+    key: '/admin/notification'
   }
 ];
 export { mainRoutes, adminRoutes };

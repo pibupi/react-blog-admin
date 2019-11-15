@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table, Button, Input, Tag } from 'antd';
-
-import { getArticleList,deleteArticle } from '../../actions/articleAction';
-
+import { getArticleList, deleteArticle } from '../../actions/articleAction';
+import './list.less';
 const { Search } = Input;
 
 const mapState = state => ({
-  articleList: state.article.articleList
+  articleList: state.article.articleList,
+  total: state.article.total
 });
-@connect(mapState, { getArticleList,deleteArticle })
+@connect(mapState, { getArticleList, deleteArticle })
 class ArticleList extends Component {
   constructor() {
     super();
     this.state = {
-      current: '',
-      pageSize: '',
+      offset: 1,
+      limited: 5,
       columns: [
         {
           title: '序号',
@@ -90,13 +90,19 @@ class ArticleList extends Component {
         {
           title: '操作',
           key: 'action',
-          width: 200,
+          width: 180,
           render: (text, record) => (
             <span>
               <Link to={{ pathname: '/admin/article/edit', state: { record } }}>
                 <Button type="primary">编辑</Button>
               </Link>
-              <Button type="danger" onClick={()=>this.deleteArticle(record.id)}>删除</Button>
+              <Button
+                type="danger"
+                style={{ marginLeft: 10 }}
+                onClick={() => this.deleteArticle(record.id)}
+              >
+                删除
+              </Button>
             </span>
           )
         }
@@ -109,16 +115,35 @@ class ArticleList extends Component {
   };
   searchArticleList = value => {
     console.log(value);
+    this.setState(
+      {
+        offset: 1,
+        limited: 5
+      },
+      () => {
+        this.props.getArticleList(this.state.offset, this.state.limited, value);
+      }
+    );
   };
-  deleteArticle =(id) =>{
-    this.props.deleteArticle(id)
-    // this.props.getArticleList();
-  }
+  deleteArticle = id => {
+    this.props.deleteArticle(id);
+  };
+  onPageChange = (page, pageSize) => {
+    this.setState(
+      {
+        offset: page,
+        limited: pageSize
+      },
+      () => {
+        this.props.getArticleList(this.state.offset, this.state.limited);
+      }
+    );
+  };
   componentDidMount() {
-    this.props.getArticleList();
+    this.props.getArticleList(this.state.offset, this.state.limited);
   }
   render() {
-    const { articleList } = this.props;
+    const { articleList, total } = this.props;
     // console.log(articleList)
     // 对后台返回的富文本内容进行处理
     articleList.forEach(item => {
@@ -127,29 +152,38 @@ class ArticleList extends Component {
       );
     });
     return (
-      <div>
-        <div>
+      <div className="article-list-wrap">
+        <div className="article-list-header">
           <Search
-            style={{ width: '30%', margin: 30 }}
+            className="article-list-search"
             placeholder="输入搜索条件"
             enterButton
             onSearch={value => this.searchArticleList(value)}
           />
+          <Button type="primary" onClick={this.addArticleBtn}>
+            添加文章
+          </Button>
         </div>
-        <Button
-          type="primary"
-          style={{ margin: '0 0 30px 30px' }}
-          onClick={this.addArticleBtn}
-        >
-          添加文章
-        </Button>
         <div className="article-list">
           <Table
             bordered
-            style={{ width: '80%', marginLeft: 30 }}
             columns={this.state.columns}
             rowKey="id"
             dataSource={articleList}
+            style={{ backgroundColor: '#fefefe' }}
+            pagination={{
+              // current:this.state.offset / this.state.limited +1,
+              defaultCurrent: 1,
+              total: total,
+              // showTotal:{this.props.total=>`总共 ${detailTotal} 条记录`},
+              pageSize: this.state.limited,
+              // hideOnSinglePage:true,
+              // showQuickJumper:true,
+              // showSizeChanger:true,
+              // pageSizeOptions:['20','40','60','80'],
+              // onShowSizeChange:this.onShowSizeChange,
+              onChange: this.onPageChange
+            }}
           />
         </div>
       </div>

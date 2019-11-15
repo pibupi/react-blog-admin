@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RichTextEdit from './Rich-text-edit';
 import { connect } from 'react-redux';
+import './edit.less';
 import {
   Form,
   Input,
@@ -15,11 +16,11 @@ import { addArticleList, updateArticle } from '../../actions/articleAction';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 5 }
+    sm: { span: 2 }
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 12 }
+    sm: { span: 5 }
   }
 };
 const mapState = state => ({});
@@ -71,13 +72,13 @@ class ArticleEdit extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div>
+      <div className="article-edit-wrap">
         <Form
           onSubmit={this.handleSubmit}
-          className="login-form"
+          className="article-edit-form"
           {...formItemLayout}
         >
-          <Form.Item label="文章标题">
+          <Form.Item label="文章标题" className="edit-form-item">
             {getFieldDecorator('title', {
               initialValue: this.allContent ? this.allContent.title : '',
               rules: [{ required: true, message: '请输入标题!' }]
@@ -90,7 +91,7 @@ class ArticleEdit extends Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="文章描述">
+          <Form.Item label="文章描述" className="edit-form-item">
             {getFieldDecorator('desc', {
               initialValue: this.allContent ? this.allContent.desc : '',
               rules: [{ required: true, message: '请输入文章描述!' }]
@@ -114,22 +115,13 @@ class ArticleEdit extends Component {
             />,
           )}
         </Form.Item> */}
-          <Form.Item label="文章内容">
-            {/* {getFieldDecorator("content", {
-              rules: [{ required: true, message: "请填写文章内容!" }]
-            })(
-              <Input
-                prefix={
-                  <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                placeholder="文章内容"
-              />
-            )} */}
-            <RichTextEdit
-              ref={this.editor}
-              detail={this.allContent ? this.allContent.content : ''}
-            />
-          </Form.Item>
+          <h3 className="article-edit-title">文章内容</h3>
+          <RichTextEdit
+            className="article-edit-text"
+            ref={this.editor}
+            detail={this.allContent ? this.allContent.content : ''}
+          />
+          {/* </Form.Item> */}
           <Form.Item>
             <Button
               type="primary"
