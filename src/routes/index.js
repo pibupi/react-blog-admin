@@ -10,7 +10,8 @@ import {
   Role,
   Other,
   NotFound,
-  Notification
+  Notification,
+  Category
 } from '../views';
 // 静态路由
 const mainRoutes = [
@@ -62,8 +63,16 @@ const adminRoutes = [
         component: ArticleEdit,
         title: '文章编辑',
         icon: 'edit',
-        isNav: true,
+        isNav: false,
         key: '/admin/article/edit'
+      },
+      {
+        pathname: '/admin/category/categoryList',
+        component: Category,
+        title: '分类管理',
+        icon: 'edit',
+        isNav: true,
+        key: '/admin/category'
       }
     ]
   },

@@ -127,6 +127,7 @@ class ArticleList extends Component {
   };
   deleteArticle = id => {
     this.props.deleteArticle(id);
+    // this.props.getArticleList(this.state.offset, this.state.limited);
   };
   onPageChange = (page, pageSize) => {
     this.setState(
@@ -135,6 +136,7 @@ class ArticleList extends Component {
         limited: pageSize
       },
       () => {
+        console.log(this.state.offset,this.state.limited)
         this.props.getArticleList(this.state.offset, this.state.limited);
       }
     );

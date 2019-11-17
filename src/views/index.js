@@ -49,6 +49,10 @@ const Notification = Loadable({
   loader: () => import('./Notification'),
   loading: Loading
 });
+const Category = Loadable({
+  loader: () => import('./Category'),
+  loading: Loading
+});
 export {
   Home,
   Login,
@@ -61,5 +65,6 @@ export {
   Power,
   Other,
   NotFound,
-  Notification
+  Notification,
+  Category
 };
