@@ -29,12 +29,44 @@ export const getArticleList = (offset, limited, keywords) => {
     }
   };
 };
+// export const addArticleList = article => {
+//   console.log(article)
+//   return async dispatch => {
+//     try {
+//       const { code, msg } = await $http.post(
+//         '/api/v1/article/addArticle',
+//         article,
+//         //  {
+//         //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+//         //  }
+//       );
+//       if (code === 0) {
+//         message.success(msg);
+//       }
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+// };
 export const addArticleList = article => {
+  console.log(article)
   return async dispatch => {
     try {
+      const {url} = await $http.post('/api/v1/upload',article.articlePic)
+      console.log(url)
+      let params = {
+        title:article.title,
+        content:article.contnet,
+        desc:article.desc,
+        url,
+        categoryId:article.categoryId
+      }
       const { code, msg } = await $http.post(
         '/api/v1/article/addArticle',
-        article
+        params
+        //  {
+        //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        //  }
       );
       if (code === 0) {
         message.success(msg);
@@ -62,7 +94,7 @@ export const deleteArticle = id => {
       const { code, msg } = await $http.post('/api/v1/article/delete', { id });
       if (code === 0) {
         message.success(msg);
-        dispatch(getArticleList());
+        dispatch(getArticleList( 1,5));
       }
     } catch (err) {
       console.log(err);
