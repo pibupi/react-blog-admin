@@ -8,7 +8,7 @@ const { Search } = Input;
 
 const mapState = state => ({
   articleList: state.article.articleList,
-  total: state.article.total
+  count: state.article.count
 });
 @connect(mapState, { getArticleList, deleteArticle })
 class ArticleList extends Component {
@@ -32,24 +32,13 @@ class ArticleList extends Component {
           title: '文章描述',
           dataIndex: 'desc'
         },
+        // 分类联表查询待实现
         {
           title: '分类',
           dataIndex: 'categoryId',
           render: tags => (
             <span>
-              {/* {tags.map(tag => {
-                let color = tag.length > 5 ? 'geekblue' : 'green';
-                if (tag === 'loser') {
-                  color = 'volcano';
-                } */}
-              {/* return ( */}
-              {/* <Tag color={color} key={tag}> */}
-              <Tag>
-                {/* {tag.toUpperCase()} */}
-                123
-              </Tag>
-              {/* ); */}
-              {/* })} */}
+              <Tag>123</Tag>
             </span>
           )
         },
@@ -65,35 +54,16 @@ class ArticleList extends Component {
           title: '作者',
           dataIndexd: 'author'
         },
-        // {
-        //   title: 'Tags',
-        //   key: 'tags',
-        //   dataIndex: 'tags',
-        //   render: tags => (
-        //     <span>
-        //       {/* {tags.map(tag => {
-        //         let color = tag.length > 5 ? 'geekblue' : 'green';
-        //         if (tag === 'loser') {
-        //           color = 'volcano';
-        //         } */}
-        //         {/* return ( */}
-        //           {/* <Tag color={color} key={tag}> */}
-        //           <Tag >
-        //             {/* {tag.toUpperCase()} */}
-        //             123
-        //           </Tag>
-        //         {/* ); */}
-        //       {/* })} */}
-        //     </span>
-        //   ),
-        // },
         {
           title: '操作',
           key: 'action',
           width: 180,
           render: (text, record) => (
             <span>
-              <Link to={{ pathname: '/admin/article/edit', state: { record } }}>
+              {/* 把当前行数据存储到路由state中，在编辑页用于区分添加/编辑 */}
+              <Link
+                to={{ pathname: '/admin/article/simplemde', state: { record } }}
+              >
                 <Button type="primary">编辑</Button>
               </Link>
               <Button
@@ -109,12 +79,12 @@ class ArticleList extends Component {
       ]
     };
   }
+  // 点击添加按钮跳转到编辑页
   addArticleBtn = () => {
-    console.log(this);
-    this.props.history.push('/admin/article/edit');
+    this.props.history.push('/admin/article/simplemde');
   };
+  // 根据文章标题搜索文章，后续可增加多条件模糊查询
   searchArticleList = value => {
-    console.log(value);
     this.setState(
       {
         offset: 1,
@@ -125,10 +95,11 @@ class ArticleList extends Component {
       }
     );
   };
+  // 删除
   deleteArticle = id => {
     this.props.deleteArticle(id);
-    // this.props.getArticleList(this.state.offset, this.state.limited);
   };
+  // 分页
   onPageChange = (page, pageSize) => {
     this.setState(
       {
@@ -136,17 +107,17 @@ class ArticleList extends Component {
         limited: pageSize
       },
       () => {
-        console.log(this.state.offset,this.state.limited)
         this.props.getArticleList(this.state.offset, this.state.limited);
       }
     );
   };
+  // 表格初始化
   componentDidMount() {
     this.props.getArticleList(this.state.offset, this.state.limited);
   }
   render() {
-    const { articleList, total } = this.props;
-    // console.log(articleList)
+    const { articleList, count } = this.props;
+    console.log(articleList);
     // 对后台返回的富文本内容进行处理
     articleList.forEach(item => {
       item.content = (
@@ -156,6 +127,7 @@ class ArticleList extends Component {
     return (
       <div className="article-list-wrap">
         <div className="article-list-header">
+          {/* 搜索可以添加一个分类查询 */}
           <Search
             className="article-list-search"
             placeholder="输入搜索条件"
@@ -167,6 +139,7 @@ class ArticleList extends Component {
           </Button>
         </div>
         <div className="article-list">
+          {/* 表格loading暂未实现 */}
           <Table
             bordered
             columns={this.state.columns}
@@ -176,9 +149,10 @@ class ArticleList extends Component {
             pagination={{
               // current:this.state.offset / this.state.limited +1,
               defaultCurrent: 1,
-              total: total,
-              // showTotal:{this.props.total=>`总共 ${detailTotal} 条记录`},
+              total: count,
+              showTotal: count => `共 ${count} 条`,
               pageSize: this.state.limited,
+              // 分页其他相关配置，暂未实现
               // hideOnSinglePage:true,
               // showQuickJumper:true,
               // showSizeChanger:true,

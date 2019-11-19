@@ -1,3 +1,6 @@
+/**
+ * @description 合并reducer
+ */
 import { combineReducers } from 'redux';
 import menus from './menus';
 import user from './user';

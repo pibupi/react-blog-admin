@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Form, Icon, Input, Button } from 'antd';
 import { userRegist } from '../../actions/userAction';
 import './regis.less';
 
@@ -15,6 +15,7 @@ const mapState = state => ({
 )
 @Form.create()
 class Register extends Component {
+  // 注册
   userRegest = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -22,6 +23,7 @@ class Register extends Component {
       }
     });
   };
+  // 去登录
   handleGoLogin = () => {
     console.log(this);
     this.props.history.push('/login');

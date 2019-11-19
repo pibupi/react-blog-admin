@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
-import RichTextEdit from './Rich-text-edit';
 import { connect } from 'react-redux';
+import { Form, Input, Select, Upload, Icon, Button } from 'antd';
+import RichTextEdit from './Rich-text-edit';
+import { addArticle, updateArticle } from '../../actions/articleAction';
+import { $http } from '../../service/http';
 import './edit.less';
-// import reqwest from 'reqwest';
-import {
-  Form,
-  Input,
-  Select,
-  // message,
-  Upload,
-  Icon,
-  Spin,
-  Button
-} from 'antd';
-import { addArticleList, updateArticle } from '../../actions/articleAction';
-import { localGettoken } from '../../utils/storage';
-import {$http} from '../../service/http'
-// const { Option } = Select;
+// 此页面待优化：
+// 1.处理上传图片组件的方法可以单独抽离出来，以便复用
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
@@ -28,145 +18,90 @@ const formItemLayout = {
     sm: { span: 5 }
   }
 };
+
 const mapState = state => ({});
-@connect(mapState, { addArticleList, updateArticle })
+@connect(mapState, { addArticle, updateArticle })
 @Form.create()
 class ArticleEdit extends Component {
   constructor(props) {
     super(props);
     this.editor = React.createRef();
     this.state = {
-      title: '',
-      desc: '',
-      detail: '',
-      isUploading: false,
-      url: '',
-      fileList: [],
-      uploading: false,
-      categoryList:[]
+      fileList: [], // 上传图片
+      categoryList: [] // 分类列表，可以放到redux统一管理
     };
   }
+  // 通过formData处理上传图片
   handleUpload = () => {
     let { fileList } = this.state;
-    console.log(fileList);
     let formData = new FormData();
     fileList.forEach(file => {
-      // console.log(file)
       formData.append('image', file);
-      // console.log(formData)
-    });
-    console.log(formData);
-    this.setState({
-      uploading: true
     });
     return formData;
-    // You can use any AJAX library you like
-    // reqwest({
-    //   url: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    //   method: 'post',
-    //   processData: false,
-    //   data: formData,
-    //   success: () => {
-    //     this.setState({
-    //       fileList: [],
-    //       uploading: false,
-    //     });
-    //     message.success('upload successfully.');
-    //   },
-    //   error: () => {
-    //     this.setState({
-    //       uploading: false,
-    //     });
-    //     message.error('upload failed.');
-    //   },
-    // });
   };
+  // 表单提交
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      console.log(values);
       if (!err) {
+        // 获取经过formData处理过后的上传图片内容
         const formData = this.handleUpload();
-        // console.log(fileList[0]['File'])
-        // console.log(formData)
+        // 由此来判断添加or编辑
         if (this.allContent) {
+          // 通过触发子组件的方法获取富文本内容
           const detail = await this.editor.current.getDetail();
           let params = {
             title: values.title,
             desc: values.desc,
             content: detail,
-            id: this.allContent.id,
-            categoryId:values.categoryId,
+            id: this.allContent.id, // 编辑需要传递id
+            categoryId: values.categoryId,
             articlePic: formData
           };
           await this.props.updateArticle(params);
           this.setState({
-            fileList: []
+            fileList: [] // 上传图片清空操作
           });
         } else {
+          // 添加
           const detail = await this.editor.current.getDetail();
           let params = {
             title: values.title,
             desc: values.desc,
             content: detail,
-            categoryId:values.categoryId,
+            categoryId: values.categoryId,
             articlePic: formData
           };
-          await this.props.addArticleList(params);
+          await this.props.addArticle(params);
+          this.setState({
+            fileList: [] // 上传图片清空操作
+          });
         }
         this.props.history.push('/admin/article/articlelist');
       }
     });
   };
   componentWillMount() {
+    // 取到列表页传递的当前行数据并据此来判断编辑or添加
     if (this.props.history.location.state) {
       const { record } = this.props.history.location.state;
       this.isUpdate = !!record;
       this.allContent = record || {};
     }
   }
-  // handleUploadAvatar = ({ file }) => {
-  //   console.log(file);
-  //   return new Promise((resolve, reject) => {
-  //     const xhr = new XMLHttpRequest();
-  //     xhr.open('POST', 'http://localhost:5001/api/v1/upload/title'); // 后端上传图片的接口地址
-  //     xhr.setRequestHeader('Authorization', 'Bearer ' + localGettoken('token'));
-  //     const data = new FormData();
-  //     console.log(file);
-  //     data.append('image', file);
-  //     console.log(data);
-  //     xhr.send(data);
-  //     xhr.addEventListener('load', () => {
-  //       const response = JSON.parse(xhr.responseText);
-  //       const url = response.url;
-  //       // resolve({ data: { link: url } }); // 后端返回的url地址
-  //       this.setState({
-  //         url
-  //       })
-  //     });
-  //     xhr.addEventListener('error', () => {
-  //       const error = JSON.parse(xhr.responseText);
-  //       reject(error);
-  //     });
-  //   });
-  // };
-  // normFile = e => {
-  //   console.log('Upload event:', e);
-  //   if (Array.isArray(e)) {
-  //     return e;
-  //   }
-  //   return e && e.fileList;
-  // };
-  componentDidMount(){
-    $http.get('/api/v1/category/all').then(res=>{
+  componentDidMount() {
+    // 获取所有分类，后续可以存储到redux中
+    $http.get('/api/v1/category/all').then(res => {
       this.setState({
-        categoryList:res.data
-      })
-    })
+        categoryList: res.data
+      });
+    });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { uploading, fileList } = this.state;
+    const { fileList } = this.state;
+    // 定义上传组件的相关配置
     const props = {
       onRemove: file => {
         this.setState(state => {
@@ -178,6 +113,7 @@ class ArticleEdit extends Component {
           };
         });
       },
+      // 改方法用于实现手动上传
       beforeUpload: file => {
         this.setState(state => ({
           fileList: [...state.fileList, file]
@@ -219,52 +155,22 @@ class ArticleEdit extends Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="文章分类" >
+          <Form.Item label="文章分类">
             {getFieldDecorator('categoryId', {
-              rules: [
-                { required: true, message: '请选择分类!' }
-              ]
+              rules: [{ required: true, message: '请选择分类!' }]
             })(
               <Select placeholder="请选择分类">
-                {
-                  this.state.categoryList.map(item=>{
-                    return (
-                    <Option value={item.id} key={item.id}>{item.category_name}</Option>
-                    )
-                  })
-                }
+                {this.state.categoryList.map(item => {
+                  return (
+                    <Option value={item.id} key={item.id}>
+                      {item.category_name}
+                    </Option>
+                  );
+                })}
               </Select>
             )}
           </Form.Item>
           <Form.Item label="上传图片" extra="">
-            {/* {getFieldDecorator('upload', {
-              valuePropName: 'fileList',
-              getValueFromEvent: this.normFile
-            })(
-              <Upload
-                // name="avatar"
-                style={{
-                  border: '1px dashed #dedede',
-                  width: 80,
-                  height: 80,
-                  display: 'block'
-                }}
-                showUploadList={false}
-                customRequest={this.handleUploadAvatar}
-              >
-                <Spin spinning={this.state.isUploading}>
-                  {this.state.url ? (
-                    <img
-                      style={{ width: 78, height: 78 }}
-                      src={this.state.url}
-                      alt="文章标题图片"
-                    />
-                  ) : (
-                    <span>点击上传</span>
-                  )}
-                </Spin>
-              </Upload>
-            )} */}
             <Upload {...props}>
               <Button>
                 <Icon type="upload" /> Select File
@@ -277,7 +183,6 @@ class ArticleEdit extends Component {
             ref={this.editor}
             detail={this.allContent ? this.allContent.content : ''}
           />
-          {/* </Form.Item> */}
           <Form.Item>
             <Button
               type="primary"

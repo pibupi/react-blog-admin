@@ -21,10 +21,21 @@ const ArticleList = Loadable({
   loader: () => import('./Article/List'),
   loading: Loading
 });
-const ArticleEdit = Loadable({
-  loader: () => import('./Article/Edit'),
+// markdown
+const Simplemde = Loadable({
+  loader: () => import('./Article/Simplemde'),
   loading: Loading
 });
+// 富文本
+// const ArticleRich = Loadable({
+//   loader: () => import('./Article/Rich'),
+//   loading: Loading
+// });
+// for-edit 测试编辑器
+// const ForEdit = Loadable({
+//   loader: () => import('./Article/For-edit'),
+//   loading: Loading
+// });
 const Role = Loadable({
   loader: () => import('./Settings/Role'),
   loading: Loading
@@ -59,7 +70,9 @@ export {
   Register,
   Dashboard,
   ArticleList,
-  ArticleEdit,
+  // ArticleRich,
+  Simplemde,
+  // ForEdit,
   Role,
   User,
   Power,

@@ -8,11 +8,12 @@ import {
   updateCategory
 } from '../../actions/categoryAction';
 import './category.less';
+
 const { Search } = Input;
 
 const mapState = state => ({
   categoryList: state.category.categoryList,
-  total: state.category.total
+  count: state.category.count
 });
 @Form.create()
 @connect(mapState, {
@@ -30,7 +31,7 @@ class Category extends Component {
       limited: 5,
       category_name: '',
       categoryId: null,
-      form: 'edit',
+      form: 'edit', // 编辑or添加标志
       columns: [
         {
           title: '序号',
@@ -72,6 +73,7 @@ class Category extends Component {
       ]
     };
   }
+  // 分类编辑
   editCategory = record => {
     this.props.form.resetFields();
     this.setState({
@@ -81,10 +83,10 @@ class Category extends Component {
       categoryId: record.id
     });
   };
+  // 表单提交
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      console.log(values);
       if (!err) {
         if (this.state.form === 'add') {
           await this.props.addCategory(values);
@@ -94,7 +96,6 @@ class Category extends Component {
             ...values
           };
           await this.props.updateCategory(params);
-          // this.props.form.resetFields();
         }
         this.props.form.resetFields();
         this.setState({
@@ -103,14 +104,14 @@ class Category extends Component {
       }
     });
   };
-
+  // 取消
   handleCancel = e => {
     this.setState({
       visible: false,
       category_name: ''
     });
   };
-
+  // 添加
   addCategoryBtn = () => {
     this.setState({
       visible: true,
@@ -118,6 +119,11 @@ class Category extends Component {
       category_name: ''
     });
   };
+  // 删除
+  deleteCategory = id => {
+    this.props.deleteCategory(id);
+  };
+  // 搜索
   searchCategoryList = value => {
     this.setState(
       {
@@ -129,9 +135,7 @@ class Category extends Component {
       }
     );
   };
-  deleteCategory = id => {
-    this.props.deleteCategory(id);
-  };
+  // 点击分页
   onPageChange = (page, pageSize) => {
     this.setState(
       {
@@ -147,7 +151,7 @@ class Category extends Component {
     this.props.getCategoryList(this.state.offset, this.state.limited);
   }
   render() {
-    const { categoryList, total } = this.props;
+    const { categoryList, count } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="category-list-wrap">
@@ -171,7 +175,7 @@ class Category extends Component {
             style={{ backgroundColor: '#fefefe' }}
             pagination={{
               defaultCurrent: 1,
-              total: total,
+              count: count,
               pageSize: this.state.limited,
               onChange: this.onPageChange
             }}
