@@ -16,6 +16,7 @@ let timer;
 $http.interceptors.request.use(
   config => {
     const token = localGettoken("token");
+    // 可以在自处过滤掉不需要token的接口请求
     if (token) {
       config.headers.common["Authorization"] = "Bearer " + token;
     }
@@ -29,7 +30,6 @@ $http.interceptors.request.use(
 //拦截响应
 $http.interceptors.response.use(
   response => {
-    // console.log(response)
     if (response.status !== 200) {
       // 获取更新的token
       const { Authorization } = response.headers;

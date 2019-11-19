@@ -4,7 +4,9 @@ import {
   Register,
   Dashboard,
   ArticleList,
-  ArticleEdit,
+  Simplemde,
+  // ArticleRich,
+  // ForEdit, // for-edit 测试编辑器
   User,
   Power,
   Role,
@@ -58,14 +60,33 @@ const adminRoutes = [
         isNav: true,
         key: '/admin/article/articlelist'
       },
+      // markdown
       {
-        pathname: '/admin/article/edit',
-        component: ArticleEdit,
+        pathname: '/admin/article/simplemde',
+        component: Simplemde,
         title: '文章编辑',
         icon: 'edit',
         isNav: false,
-        key: '/admin/article/edit'
+        key: '/admin/article/simplemde'
       },
+      // 富文本
+      // {
+      //   pathname: '/admin/article/rich',
+      //   component: ArticleRich,
+      //   title: '文章编辑',
+      //   icon: 'edit',
+      //   isNav: false,
+      //   key: '/admin/article/rich'
+      // },
+      // for-edit测试编辑器
+      // {
+      //   pathname: '/admin/article/for-edit',
+      //   component: ForEdit,
+      //   title: '文章编辑3',
+      //   icon: 'edit',
+      //   isNav: false,
+      //   key: '/admin/article/for-edit'
+      // },
       {
         pathname: '/admin/category/categoryList',
         component: Category,

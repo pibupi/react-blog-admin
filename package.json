@@ -8,10 +8,13 @@
     "babel-plugin-import": "^1.12.2",
     "customize-cra": "^0.8.0",
     "draftjs-to-html": "^0.8.4",
+    "for-editor": "^0.3.4",
+    "highlight.js": "^9.16.2",
     "html-to-draftjs": "^1.4.0",
     "jwt-decode": "^2.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "marked": "^0.7.0",
     "path-to-regexp": "^3.1.0",
     "react": "^16.11.0",
     "react-app-rewired": "^2.1.4",
@@ -23,7 +26,9 @@
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "simplemde": "^1.11.2",
+    "xss": "^1.0.6"
   },
   "scripts": {
     "start": "react-app-rewired start",

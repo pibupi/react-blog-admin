@@ -10,17 +10,26 @@ import {
   localRemovetoken,
   localRemoveuserInfo
 } from '../utils/storage';
+/**
+ *@func loginStart - 用户开始登录的action
+ */
 const loginStart = () => {
   return {
     type: actionTypes.START_LOGIN
   };
 };
+/**
+ *@func loginSuccess - 用户登录成功的action
+ */
 const loginSuccess = payload => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload
   };
 };
+/**
+ *@func loginFailed - 用户登录失败的action
+ */
 const loginFailed = () => {
   sessionRemovetoken();
   sessionRemoveuserInfo();
@@ -30,6 +39,28 @@ const loginFailed = () => {
     type: actionTypes.LOGINZ_FAILED
   };
 };
+/**
+ *@func registerFail - 用户注册失败的action
+ */
+const registerFail = payload => {
+  return {
+    type: actionTypes.REGISTER_FAILED,
+    payload
+  };
+};
+/**
+ *@func registerFail - 用户注册成功的action
+ */
+const registerSuccess = payload => {
+  return {
+    type: actionTypes.REGISTER_SUCCESS,
+    payload
+  };
+};
+/**
+ * @description -{post} /api/v1/user/login
+ * @func startLogin -用户登录
+ */
 export const startLogin = userInfo => {
   const { username, password, remember } = userInfo;
   return async dispatch => {
@@ -55,26 +86,19 @@ export const startLogin = userInfo => {
     }
   };
 };
+/**
+ * @func logOut - 用户退出
+ */
 export const logOut = () => {
-  // 待改善，还没定义好接口
   return dispatch => {
     dispatch(loginFailed());
     dispatch(registerFail());
   };
 };
-const registerFail = payload => {
-  return {
-    type: actionTypes.REGISTER_FAILED,
-    payload
-  };
-};
-
-const registerSuccess = payload => {
-  return {
-    type: actionTypes.REGISTER_SUCCESS,
-    payload
-  };
-};
+/**
+ * @description - {post} /api/v1/user/register
+ * @func userRegist - 用户注册
+ */
 export const userRegist = ({ username, displayName, password, pwdConfirm }) => {
   return async dispatch => {
     if (!username || !password) {

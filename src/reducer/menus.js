@@ -1,13 +1,14 @@
+/**
+ * @description 菜单的reducer
+ */
 import actionTypes from '../actions/actionTypes';
 let initState = {
   menulist: [],
   openKeys: [],
-  menuName:'首页'
+  menuName: '首页'
 };
 export default (preState = initState, action) => {
-  let newState = {
-    ...preState
-  };
+  let newState = { ...preState };
   switch (action.type) {
     case actionTypes.GET_MENU_LIST:
       newState.menulist = action.payload;

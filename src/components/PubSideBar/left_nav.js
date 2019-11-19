@@ -1,34 +1,19 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { changeopenkeys } from '../../actions/menuAction';
 import { Menu, Icon } from 'antd';
+import { changeOpenKeys } from '../../actions/menuAction';
+
 const { SubMenu } = Menu;
 
 const mapState = state => ({
   menulist: state.menus.menulist,
   openKeys: state.menus.openKeys
 });
-@connect(mapState, { changeopenkeys })
+@connect(mapState, { changeOpenKeys })
 @withRouter
 class LeftNav extends Component {
-  onOpenChange = openKeys => {
-    this.rootSubmenuKeys = this.props.menulist.map(item => {
-      if (item.children) {
-        return item.pathname;
-      } else {
-        return null;
-      }
-    });
-    const latestOpenKey = openKeys.find(
-      key => this.props.openKeys.indexOf(key) === -1
-    );
-    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      this.props.changeopenkeys(openKeys);
-    } else {
-      this.props.changeopenkeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
+  // 递归生成菜单
   getMenuNodes = adminRoutes => {
     return adminRoutes.map(item => {
       if (!item.children) {
@@ -57,11 +42,25 @@ class LeftNav extends Component {
       }
     });
   };
-  componentWillMount() {
-    this.menuNodes = this.getMenuNodes(this.props.menulist);
-    // 有个问题，这里的路径只能判断到2级路由，待搞？
-    this.openSubMenu();
-  }
+  // 展开项展开的方法
+  onOpenChange = openKeys => {
+    this.rootSubmenuKeys = this.props.menulist.map(item => {
+      if (item.children) {
+        return item.pathname;
+      } else {
+        return null;
+      }
+    });
+    const latestOpenKey = openKeys.find(
+      key => this.props.openKeys.indexOf(key) === -1
+    );
+    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      this.props.changeOpenKeys(openKeys);
+    } else {
+      this.props.changeOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
+  // 展开项，待完善
   openSubMenu = () => {
     let arr = this.props.location.pathname.split('/');
     let arr1 = [];
@@ -81,6 +80,11 @@ class LeftNav extends Component {
     // 如何存两个数组
     this.onOpenChange([arr1.join('/')]);
   };
+  componentWillMount() {
+    this.menuNodes = this.getMenuNodes(this.props.menulist);
+    // 有个问题，这里的路径只能判断到2级路由，待搞？
+    this.openSubMenu();
+  }
   render() {
     let selectKeys = this.props.location.pathname;
     return (
