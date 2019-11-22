@@ -4,17 +4,17 @@ import { message } from 'antd';
 /**
  * @func getArticleListSucccess -获取文章列表成功的action
  */
-const getArticleListSucccess = payload => {
+const getArticleListSucccessAction = payload => {
   return {
     type: actionTypes.GET_ARTICLE_LIST,
     payload
   };
 };
 /**
- * @description -{get} /api/v1/article/list
+ * @description -{get} /api/v1/admin/article/list
  * @func getArticleList -获取文章列表
  */
-export const getArticleList = (offset, limited, keywords) => {
+export const getArticleListAction = (offset, limited, keywords) => {
   keywords = keywords ? keywords : '';
   return async dispatch => {
     try {
@@ -23,10 +23,10 @@ export const getArticleList = (offset, limited, keywords) => {
         data: { articleList, count },
         msg
       } = await $http.get(
-        `/api/v1/article/list?offset=${offset}&limited=${limited}&keywords=${keywords}`
+        `/api/v1/admin/article/list?offset=${offset}&limited=${limited}&keywords=${keywords}`
       );
       if (code === 0) {
-        dispatch(getArticleListSucccess({ articleList, msg, count }));
+        dispatch(getArticleListSucccessAction({ articleList, msg, count }));
         message.success(msg);
       } else {
         message.warning(msg);
@@ -37,10 +37,10 @@ export const getArticleList = (offset, limited, keywords) => {
   };
 };
 /**
- * @description -{post} /api/v1/upload
+ * @description -{post} /api/v1/admin/article/add
  * @func addArticleList - 添加文章
  */
-export const addArticle = article => {
+export const addArticleAction = article => {
   return async dispatch => {
     try {
       /**
@@ -53,9 +53,13 @@ export const addArticle = article => {
         content: article.content,
         desc: article.desc,
         url,
-        categoryId: article.categoryId
+        category_name: article.category_name,
+        category_id: article.category_id
       };
-      const { code, msg } = await $http.post('/api/v1/article/add', params);
+      const { code, msg } = await $http.post(
+        '/api/v1/admin/article/add',
+        params
+      );
       if (code === 0) {
         message.success(msg);
       }
@@ -65,10 +69,10 @@ export const addArticle = article => {
   };
 };
 /**
- * @description -{post} /api/v1/article/update
+ * @description -{post} /api/v1/admin/article/update
  * @func updateArticle -更新文章
  */
-export const updateArticle = article => {
+export const updateArticleAction = article => {
   return async dispatch => {
     try {
       const { url } = await $http.post('/api/v1/upload', article.articlePic);
@@ -78,9 +82,13 @@ export const updateArticle = article => {
         content: article.content,
         desc: article.desc,
         url,
-        categoryId: article.categoryId
+        category_name: article.category_name,
+        category_id: article.category_id
       };
-      const { code, msg } = await $http.post('/api/v1/article/update', params);
+      const { code, msg } = await $http.post(
+        '/api/v1/admin/article/update',
+        params
+      );
       if (code === 0) {
         message.success(msg);
       }
@@ -90,17 +98,16 @@ export const updateArticle = article => {
   };
 };
 /**
- * @description -{post} /api/v1/article/delete
+ * @description -{post} /api/v1/admin/article/delete
  * @func deleteArticle -删除文章
  */
-export const deleteArticle = id => {
+export const deleteArticleAction = id => {
   return async dispatch => {
     try {
-      const { code, msg } = await $http.post('/api/v1/article/delete', { id });
-      if (code === 0) {
-        message.success(msg);
-        dispatch(getArticleList(1, 5));
-      }
+      const res = await $http.post('/api/v1/admin/article/delete', {
+        id
+      });
+      return res;
     } catch (err) {
       console.log(err);
     }

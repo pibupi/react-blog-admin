@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Input, Modal, Form, Icon } from 'antd';
+import { Table, Button, Input, Modal, Form, Icon, message } from 'antd';
 import {
-  getCategoryList,
-  deleteCategory,
-  addCategory,
-  updateCategory
+  getCategoryListAction,
+  deleteCategoryAction,
+  addCategoryAction,
+  updateCategoryAction
 } from '../../actions/categoryAction';
 import './category.less';
 
@@ -17,10 +17,10 @@ const mapState = state => ({
 });
 @Form.create()
 @connect(mapState, {
-  getCategoryList,
-  deleteCategory,
-  addCategory,
-  updateCategory
+  getCategoryListAction,
+  deleteCategoryAction,
+  addCategoryAction,
+  updateCategoryAction
 })
 class Category extends Component {
   constructor() {
@@ -63,7 +63,7 @@ class Category extends Component {
               <Button
                 type="danger"
                 style={{ marginLeft: 10 }}
-                onClick={() => this.deleteCategory(record.id)}
+                onClick={() => this.deleteCategoryAction(record.id)}
               >
                 删除
               </Button>
@@ -89,18 +89,28 @@ class Category extends Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         if (this.state.form === 'add') {
-          await this.props.addCategory(values);
+          let { code, msg } = await this.props.addCategoryAction(values);
+          if (code === 0) {
+            message.success(msg);
+          } else if (code === 1) {
+            message.warning(msg);
+            return;
+          }
         } else if (this.state.form === 'edit') {
           let params = {
             categoryId: this.state.categoryId,
             ...values
           };
-          await this.props.updateCategory(params);
+          let { code, msg } = await this.props.updateCategoryAction(params);
+          if (code === 0) {
+            message.success(msg);
+          }
         }
         this.props.form.resetFields();
         this.setState({
           visible: false
         });
+        this.props.getCategoryListAction(this.state.offset, this.state.limited);
       }
     });
   };
@@ -120,8 +130,12 @@ class Category extends Component {
     });
   };
   // 删除
-  deleteCategory = id => {
-    this.props.deleteCategory(id);
+  deleteCategoryAction = async id => {
+    let { code, msg } = await this.props.deleteCategoryAction(id);
+    if (code === 0) {
+      message.success(msg);
+      this.props.getCategoryListAction(this.state.offset, this.state.limited);
+    }
   };
   // 搜索
   searchCategoryList = value => {
@@ -131,7 +145,11 @@ class Category extends Component {
         limited: 5
       },
       () => {
-        this.props.getArticleList(this.state.offset, this.state.limited, value);
+        this.props.getCategoryListAction(
+          this.state.offset,
+          this.state.limited,
+          value
+        );
       }
     );
   };
@@ -143,12 +161,12 @@ class Category extends Component {
         limited: pageSize
       },
       () => {
-        this.props.getCategoryList(this.state.offset, this.state.limited);
+        this.props.getCategoryListAction(this.state.offset, this.state.limited);
       }
     );
   };
   componentDidMount() {
-    this.props.getCategoryList(this.state.offset, this.state.limited);
+    this.props.getCategoryListAction(this.state.offset, this.state.limited);
   }
   render() {
     const { categoryList, count } = this.props;

@@ -13,7 +13,7 @@ import {
 /**
  *@func loginStart - 用户开始登录的action
  */
-const loginStart = () => {
+const loginStartAction = () => {
   return {
     type: actionTypes.START_LOGIN
   };
@@ -21,7 +21,7 @@ const loginStart = () => {
 /**
  *@func loginSuccess - 用户登录成功的action
  */
-const loginSuccess = payload => {
+const loginSuccessAction = payload => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload
@@ -30,7 +30,7 @@ const loginSuccess = payload => {
 /**
  *@func loginFailed - 用户登录失败的action
  */
-const loginFailed = () => {
+const loginFailedAction = () => {
   sessionRemovetoken();
   sessionRemoveuserInfo();
   localRemovetoken();
@@ -42,7 +42,7 @@ const loginFailed = () => {
 /**
  *@func registerFail - 用户注册失败的action
  */
-const registerFail = payload => {
+const registerFailAction = payload => {
   return {
     type: actionTypes.REGISTER_FAILED,
     payload
@@ -51,7 +51,7 @@ const registerFail = payload => {
 /**
  *@func registerFail - 用户注册成功的action
  */
-const registerSuccess = payload => {
+const registerSuccessAction = payload => {
   return {
     type: actionTypes.REGISTER_SUCCESS,
     payload
@@ -61,13 +61,13 @@ const registerSuccess = payload => {
  * @description -{post} /api/v1/user/login
  * @func startLogin -用户登录
  */
-export const startLogin = userInfo => {
+export const startLoginAction = userInfo => {
   const { username, password, remember } = userInfo;
   return async dispatch => {
-    dispatch(loginStart());
+    dispatch(loginStartAction());
     try {
       await $http
-        .post('/api/v1/user/login', { username, password })
+        .post('/api/v1/admin/user/login', { username, password })
         .then(res => {
           const { code, token, displayName, username } = res;
           if (code === 0) {
@@ -78,45 +78,50 @@ export const startLogin = userInfo => {
               sessionSavetoken(token);
               sessionSaveuserInfo({ displayName, username });
             }
-            dispatch(loginSuccess({ token, displayName }));
+            dispatch(loginSuccessAction({ token, displayName }));
           }
         });
     } catch {
-      dispatch(loginFailed());
+      dispatch(loginFailedAction());
     }
   };
 };
 /**
  * @func logOut - 用户退出
  */
-export const logOut = () => {
+export const logOutAction = () => {
   return dispatch => {
-    dispatch(loginFailed());
-    dispatch(registerFail());
+    dispatch(loginFailedAction());
+    dispatch(registerFailAction());
   };
 };
 /**
  * @description - {post} /api/v1/user/register
  * @func userRegist - 用户注册
  */
-export const userRegist = ({ username, displayName, password, pwdConfirm }) => {
+export const userRegistAction = ({
+  username,
+  displayName,
+  password,
+  pwdConfirm
+}) => {
   return async dispatch => {
     if (!username || !password) {
-      dispatch(registerFail('账号密码不能为空'));
+      dispatch(registerFailAction('账号密码不能为空'));
       return;
     }
     if (password !== pwdConfirm) {
-      dispatch(registerFail('两次密码不一致'));
+      dispatch(registerFailAction('两次密码不一致'));
       return;
     }
     await $http
-      .post(`/api/v1/user/register`, { username, displayName, password })
+      .post(`/api/v1/admin/user/register`, { username, displayName, password })
       .then(res => {
         const { code, msg } = res;
         if (code === 0) {
-          dispatch(registerSuccess({ displayName, msg }));
+          dispatch(registerSuccessAction({ displayName, msg }));
         } else {
-          dispatch(registerFail(msg));
+          dispatch(registerFailAction(msg));
         }
       });
   };

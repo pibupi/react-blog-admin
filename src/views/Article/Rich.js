@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Select, Upload, Icon, Button } from 'antd';
 import RichTextEdit from './Rich-text-edit';
-import { addArticle, updateArticle } from '../../actions/articleAction';
+import {
+  addArticleAction,
+  updateArticleAction
+} from '../../actions/articleAction';
 import { $http } from '../../service/http';
 import './edit.less';
 // 此页面待优化：
@@ -20,7 +23,7 @@ const formItemLayout = {
 };
 
 const mapState = state => ({});
-@connect(mapState, { addArticle, updateArticle })
+@connect(mapState, { addArticleAction, updateArticleAction })
 @Form.create()
 class ArticleEdit extends Component {
   constructor(props) {
@@ -59,7 +62,7 @@ class ArticleEdit extends Component {
             categoryId: values.categoryId,
             articlePic: formData
           };
-          await this.props.updateArticle(params);
+          await this.props.updateArticleAction(params);
           this.setState({
             fileList: [] // 上传图片清空操作
           });
@@ -73,7 +76,7 @@ class ArticleEdit extends Component {
             categoryId: values.categoryId,
             articlePic: formData
           };
-          await this.props.addArticle(params);
+          await this.props.addArticleAction(params);
           this.setState({
             fileList: [] // 上传图片清空操作
           });

@@ -5,17 +5,17 @@ import { message } from 'antd';
  * @func addCategorySucccess -获取分类成功的action
  * @FuncGroup category
  */
-const getCategoryListSucccess = payload => {
+const getCategoryListSucccessAction = payload => {
   return {
     type: actionTypes.ADD_CATEGORY_CUSSESS,
     payload
   };
 };
 /**
- * @description - {get} /api/v1/category/list?
+ * @description - {get} /api/v1/admin/category/list
  * @func getCategoryList -获取分类列表
  */
-export const getCategoryList = (offset, limited, keywords) => {
+export const getCategoryListAction = (offset, limited, keywords) => {
   keywords = keywords ? keywords : '';
   return async dispatch => {
     try {
@@ -24,10 +24,10 @@ export const getCategoryList = (offset, limited, keywords) => {
         data: { categoryList, count },
         msg
       } = await $http.get(
-        `/api/v1/category/list?offset=${offset}&limited=${limited}&keywords=${keywords}`
+        `/api/v1/admin/category/list?offset=${offset}&limited=${limited}&keywords=${keywords}`
       );
       if (code === 0) {
-        dispatch(getCategoryListSucccess({ categoryList, msg, count }));
+        dispatch(getCategoryListSucccessAction({ categoryList, msg, count }));
         message.success(msg);
       } else {
         message.warning(msg);
@@ -38,52 +38,44 @@ export const getCategoryList = (offset, limited, keywords) => {
   };
 };
 /**
- * @description - {post} /api/v1/category/create
+ * @description - {post} /api/v1/admin/category/add
  * @func addCategory 添加分类
  */
-export const addCategory = values => {
+export const addCategoryAction = values => {
   return async dispatch => {
     try {
-      const { code, msg } = await $http.post('/api/v1/category/add', values);
-      if (code === 0) {
-        message.success(msg);
-      }
+      const res = await $http.post('/api/v1/admin/category/add', values);
+      return res;
     } catch (err) {
       console.log(err);
     }
   };
 };
 /**
- * @description - {post} /api/v1/category/update
+ * @description - {post} /api/v1/admin/category/update
  * @func updateCategory 更新分类
  */
-export const updateCategory = params => {
+export const updateCategoryAction = params => {
   return async dispatch => {
     try {
-      const { code, msg } = await $http.post('/api/v1/category/update', params);
-      if (code === 0) {
-        message.success(msg);
-        dispatch(getCategoryList(1, 5));
-      }
+      const res = await $http.post('/api/v1/admin/category/update', params);
+      return res;
     } catch (err) {
       console.log(err);
     }
   };
 };
 /**
- * @description - {post} /api/v1/category/delete
- * @func deleteCategory 更新分类
+ * @description - {post} /api/v1/admin/category/delete
+ * @func deleteCategory 删除分类
  */
-export const deleteCategory = categoryId => {
+export const deleteCategoryAction = categoryId => {
   return async dispatch => {
     try {
-      const { code, msg } = await $http.post('/api/v1/category/delete', {
+      const res = await $http.post('/api/v1/admin/category/delete', {
         categoryId
       });
-      if (code === 0) {
-        message.success(msg);
-        dispatch(getCategoryList(1, 5));
-      }
+      return res;
     } catch (err) {
       console.log(err);
     }
