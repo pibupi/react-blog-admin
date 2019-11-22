@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { startLogin } from '../../actions/userAction';
+import { startLoginAction } from '../../actions/userAction';
 import './login.less';
 
 const mapState = state => ({
   isLogin: state.user.isLogin
 });
-@connect(mapState, { startLogin })
+@connect(mapState, { startLoginAction })
 @Form.create()
 class Login extends Component {
   constructor() {
@@ -22,7 +22,7 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.startLogin(values);
+        this.props.startLoginAction(values);
       }
     });
   };

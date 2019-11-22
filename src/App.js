@@ -3,14 +3,11 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { adminRoutes } from './routes';
 import { Home } from './views';
-import { getMenuList } from './actions/menuAction';
+import { getMenuListAction } from './actions/menuAction';
 const mapState = state => ({
   menulist: state.menus.menulist
 });
-@connect(
-  mapState,
-  { getMenuList }
-)
+@connect(mapState, { getMenuListAction })
 class App extends Component {
   // 根据路由列表筛选出导航展示的菜单
   getMenus = adminRoutes => {
@@ -47,7 +44,7 @@ class App extends Component {
   componentWillMount() {
     let routes = JSON.parse(JSON.stringify(adminRoutes));
     const menus = this.getMenus(routes);
-    this.props.getMenuList(menus);
+    this.props.getMenuListAction(menus);
   }
   render() {
     return (

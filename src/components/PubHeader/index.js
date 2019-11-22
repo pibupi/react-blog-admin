@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Dropdown, Icon, Avatar, Badge } from 'antd';
-import { logOut } from '../../actions/userAction';
+import { logOutAction } from '../../actions/userAction';
 import Logo from '../../assets/images/logo.png';
 import './pubheader.less';
 
@@ -10,14 +10,14 @@ const mapState = state => ({
   displayName: state.user.displayName
 });
 @connect(mapState, {
-  logOut
+  logOutAction
 })
 @withRouter
 class Header extends Component {
   // 右侧下拉列表菜单点击的方法
   onClick = ({ key }) => {
     if (key === '/login') {
-      this.props.logOut();
+      this.props.logOutAction();
     }
     this.props.history.push(key);
   };

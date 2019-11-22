@@ -9,7 +9,10 @@ import SimpleMDE from 'simplemde';
 import 'simplemde/dist/simplemde.min.css';
 import { Form, Input, Select, Upload, Icon, Button } from 'antd';
 import './simplemde.less';
-import { addArticle, updateArticle } from '../../actions/articleAction';
+import {
+  addArticleAction,
+  updateArticleAction
+} from '../../actions/articleAction';
 import { $http } from '../../service/http';
 // 此页面待优化：
 // 1.处理上传图片组件的方法，markdown组件可以单独抽离出来，以便复用
@@ -39,7 +42,7 @@ const formItemLayout = {
 // );
 
 const mapState = state => ({});
-@connect(mapState, { addArticle, updateArticle })
+@connect(mapState, { addArticleAction, updateArticleAction })
 @Form.create()
 class ArticleEdit extends Component {
   constructor(props) {
@@ -69,6 +72,9 @@ class ArticleEdit extends Component {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
+        let category_name = this.state.categoryList.find(
+          item => item.id === values.category_id
+        ).category_name;
         const formData = this.handleUpload();
         if (this.allContent) {
           let params = {
@@ -76,10 +82,11 @@ class ArticleEdit extends Component {
             desc: values.desc,
             content: this.smde.value(),
             id: this.allContent.id, // 编辑需要传递id
-            categoryId: values.categoryId,
+            category_name,
+            category_id: values.category_id,
             articlePic: formData
           };
-          await this.props.updateArticle(params);
+          await this.props.updateArticleAction(params);
           this.setState({
             fileList: []
           });
@@ -88,10 +95,11 @@ class ArticleEdit extends Component {
             title: values.title,
             desc: values.desc,
             content: this.smde.value(),
-            categoryId: values.categoryId,
+            category_name,
+            category_id: values.category_id,
             articlePic: formData
           };
-          await this.props.addArticle(params);
+          await this.props.addArticleAction(params);
           this.setState({
             fileList: []
           });
@@ -167,7 +175,7 @@ class ArticleEdit extends Component {
         });
     });
     // 获取分类列表
-    $http.get('/api/v1/category/all').then(res => {
+    $http.get('/api/v1/admin/category/all').then(res => {
       this.setState({
         categoryList: res.data
       });
@@ -239,8 +247,8 @@ class ArticleEdit extends Component {
             )}
           </Form.Item>
           <Form.Item label="文章分类">
-            {getFieldDecorator('categoryId', {
-              rules: [{ required: true, message: '请选择分类!' }]
+            {getFieldDecorator('category_id', {
+              rules: [{ required: true }]
             })(
               <Select placeholder="请选择分类">
                 {this.state.categoryList.map(item => {

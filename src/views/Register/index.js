@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button } from 'antd';
-import { userRegist } from '../../actions/userAction';
+import { userRegistAction } from '../../actions/userAction';
 import './regis.less';
 
 const mapState = state => ({
   msg: state.user.msg,
   redirectTo: state.user.redirectTo
 });
-@connect(
-  mapState,
-  { userRegist }
-)
+@connect(mapState, { userRegistAction })
 @Form.create()
 class Register extends Component {
   // 注册
   userRegest = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.userRegist(values);
+        this.props.userRegistAction(values);
       }
     });
   };

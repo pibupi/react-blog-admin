@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Icon } from 'antd';
-import { changeOpenKeys } from '../../actions/menuAction';
+import { changeOpenKeysAction } from '../../actions/menuAction';
 
 const { SubMenu } = Menu;
 
@@ -10,7 +10,7 @@ const mapState = state => ({
   menulist: state.menus.menulist,
   openKeys: state.menus.openKeys
 });
-@connect(mapState, { changeOpenKeys })
+@connect(mapState, { changeOpenKeysAction })
 @withRouter
 class LeftNav extends Component {
   // 递归生成菜单
@@ -55,9 +55,9 @@ class LeftNav extends Component {
       key => this.props.openKeys.indexOf(key) === -1
     );
     if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      this.props.changeOpenKeys(openKeys);
+      this.props.changeOpenKeysAction(openKeys);
     } else {
-      this.props.changeOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+      this.props.changeOpenKeysAction(latestOpenKey ? [latestOpenKey] : []);
     }
   };
   // 展开项，待完善

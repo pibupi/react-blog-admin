@@ -1,17 +1,16 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { Layout } from "antd";
-import { PubHeader, PubFooter, PubSideBar } from "../../components";
-import { startLogin } from "../../actions/userAction";
-import "./home.less";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Layout } from 'antd';
+import { PubHeader, PubFooter, PubSideBar } from '../../components';
+import './home.less';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const mapState = state => ({
   isLogin: state.user.isLogin
 });
-@connect(mapState, { startLogin })
+@connect(mapState)
 class Home extends Component {
   render() {
     const { isLogin } = this.props;
@@ -20,12 +19,12 @@ class Home extends Component {
       return <Redirect to="/login" />;
     }
     return (
-      <Layout style={{ minHeight: "100vh" }}>
-        <Header style={{ backgroundColor: "#eee" }}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Header style={{ backgroundColor: '#eee' }}>
           <PubHeader />
         </Header>
         <Layout>
-          <Sider style={{ color: "#fff" }}>
+          <Sider style={{ color: '#fff' }}>
             <PubSideBar />
           </Sider>
           <Content>{this.props.children}</Content>

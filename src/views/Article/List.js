@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Button, Input, Tag } from 'antd';
-import { getArticleList, deleteArticle } from '../../actions/articleAction';
+import { Table, Button, Input, Tag, message } from 'antd';
+import {
+  getArticleListAction,
+  deleteArticleAction
+} from '../../actions/articleAction';
 import './list.less';
 const { Search } = Input;
 
@@ -10,7 +13,7 @@ const mapState = state => ({
   articleList: state.article.articleList,
   count: state.article.count
 });
-@connect(mapState, { getArticleList, deleteArticle })
+@connect(mapState, { getArticleListAction, deleteArticleAction })
 class ArticleList extends Component {
   constructor() {
     super();
@@ -35,10 +38,10 @@ class ArticleList extends Component {
         // 分类联表查询待实现
         {
           title: '分类',
-          dataIndex: 'categoryId',
+          dataIndex: 'category_name',
           render: tags => (
             <span>
-              <Tag>123</Tag>
+              <Tag>{tags}</Tag>
             </span>
           )
         },
@@ -91,13 +94,21 @@ class ArticleList extends Component {
         limited: 5
       },
       () => {
-        this.props.getArticleList(this.state.offset, this.state.limited, value);
+        this.props.getArticleListAction(
+          this.state.offset,
+          this.state.limited,
+          value
+        );
       }
     );
   };
   // 删除
-  deleteArticle = id => {
-    this.props.deleteArticle(id);
+  deleteArticle = async id => {
+    let { code, msg } = await this.props.deleteArticleAction(id);
+    if (code === 0) {
+      message.success(msg);
+      this.props.getArticleListAction(this.state.offset, this.state.limited);
+    }
   };
   // 分页
   onPageChange = (page, pageSize) => {
@@ -107,13 +118,13 @@ class ArticleList extends Component {
         limited: pageSize
       },
       () => {
-        this.props.getArticleList(this.state.offset, this.state.limited);
+        this.props.getArticleListAction(this.state.offset, this.state.limited);
       }
     );
   };
   // 表格初始化
   componentDidMount() {
-    this.props.getArticleList(this.state.offset, this.state.limited);
+    this.props.getArticleListAction(this.state.offset, this.state.limited);
   }
   render() {
     const { articleList, count } = this.props;
