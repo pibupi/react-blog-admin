@@ -40,24 +40,6 @@ const loginFailedAction = () => {
   };
 };
 /**
- *@func registerFail - 用户注册失败的action
- */
-const registerFailAction = payload => {
-  return {
-    type: actionTypes.REGISTER_FAILED,
-    payload
-  };
-};
-/**
- *@func registerFail - 用户注册成功的action
- */
-const registerSuccessAction = payload => {
-  return {
-    type: actionTypes.REGISTER_SUCCESS,
-    payload
-  };
-};
-/**
  * @description -{post} /api/v1/user/login
  * @func startLogin -用户登录
  */
@@ -86,13 +68,32 @@ export const startLoginAction = userInfo => {
     }
   };
 };
+// 主页注册
+/**
+ *@func registerFail - 用户注册失败的action
+ */
+const registerFailAction = payload => {
+  return {
+    type: actionTypes.REGISTER_FAILED,
+    payload
+  };
+};
+/**
+ *@func registerFail - 用户注册成功的action
+ */
+const registerSuccessAction = payload => {
+  return {
+    type: actionTypes.REGISTER_SUCCESS,
+    payload
+  };
+};
 /**
  * @func logOut - 用户退出
  */
 export const logOutAction = () => {
   return dispatch => {
     dispatch(loginFailedAction());
-    dispatch(registerFailAction());
+    // dispatch(registerFailAction());
   };
 };
 /**
@@ -103,7 +104,9 @@ export const userRegistAction = ({
   username,
   displayName,
   password,
-  pwdConfirm
+  pwdConfirm,
+  email,
+  phone
 }) => {
   return async dispatch => {
     if (!username || !password) {
@@ -115,7 +118,13 @@ export const userRegistAction = ({
       return;
     }
     await $http
-      .post(`/api/v1/admin/user/register`, { username, displayName, password })
+      .post(`/api/v1/admin/user/register`, {
+        username,
+        displayName,
+        password,
+        email,
+        phone
+      })
       .then(res => {
         const { code, msg } = res;
         if (code === 0) {
@@ -124,5 +133,35 @@ export const userRegistAction = ({
           dispatch(registerFailAction(msg));
         }
       });
+  };
+};
+/**
+ * @description - {get} /api/v1/admin/user/getuser
+ * @func getUsers - 获取用户列表
+ */
+export const getUsers = (offset, limited, keywords) => {
+  keywords = keywords ? keywords : '';
+  return async dispatch => {
+    return await $http.get(
+      `/api/v1/admin/user/getuser?offset=${offset}&limited=${limited}&keywords=${keywords}`
+    );
+  };
+};
+/**
+ * @description - {post} /api/v1/admin/user/delete
+ * @func deleteUserAction - 删除用户
+ */
+export const deleteUserAction = id => {
+  return async dispatch => {
+    return await $http.post('/api/v1/admin/user/delete', { id });
+  };
+};
+/**
+ * @description - {post} /api/v1/admin/user/update
+ * @func userUpdateAction - 更新用户
+ */
+export const userUpdateAction = data => {
+  return async dispatch => {
+    return await $http.post('/api/v1/admin/user/update', { data });
   };
 };

@@ -84,7 +84,8 @@ class ArticleEdit extends Component {
             id: this.allContent.id, // 编辑需要传递id
             category_name,
             category_id: values.category_id,
-            articlePic: formData
+            articlePic: formData,
+            author:values.author
           };
           await this.props.updateArticleAction(params);
           this.setState({
@@ -97,7 +98,8 @@ class ArticleEdit extends Component {
             content: this.smde.value(),
             category_name,
             category_id: values.category_id,
-            articlePic: formData
+            articlePic: formData,
+            author:values.author
           };
           await this.props.addArticleAction(params);
           this.setState({
@@ -259,6 +261,19 @@ class ArticleEdit extends Component {
                   );
                 })}
               </Select>
+            )}
+          </Form.Item>
+          <Form.Item label="作者" className="edit-form-item">
+            {getFieldDecorator('author', {
+              initialValue: this.allContent ? this.allContent.author : '',
+              rules: [{ required: true, message: '请填写作者!' }]
+            })(
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="请填写作者"
+              />
             )}
           </Form.Item>
           <Form.Item label="上传图片" extra="">

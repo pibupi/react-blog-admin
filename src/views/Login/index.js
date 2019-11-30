@@ -27,9 +27,9 @@ class Login extends Component {
     });
   };
   // 跳转到注册页
-  toRegist = () => {
-    this.props.history.push('/register');
-  };
+  // toRegist = () => {
+  //   this.props.history.push('/register');
+  // };
   // 自动登录checkbox
   onChange = e => {
     this.setState({
@@ -91,9 +91,9 @@ class Login extends Component {
                 >
                   登录
                 </Button>
-                <Button type="primary" onClick={this.toRegist}>
+                {/* <Button type="primary" onClick={this.toRegist}>
                   注册
-                </Button>
+                </Button> */}
               </div>
             </Form.Item>
           </Form>

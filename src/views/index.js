@@ -9,10 +9,10 @@ const Login = Loadable({
   loader: () => import('./Login'),
   loading: Loading
 });
-const Register = Loadable({
-  loader: () => import('./Register'),
-  loading: Loading
-});
+// const Register = Loadable({
+//   loader: () => import('./Register'),
+//   loading: Loading
+// });
 const Dashboard = Loadable({
   loader: () => import('./Dashboard'),
   loading: Loading
@@ -41,7 +41,7 @@ const Role = Loadable({
   loading: Loading
 });
 const User = Loadable({
-  loader: () => import('./Settings/User'),
+  loader: () => import('./Settings/User/User'),
   loading: Loading
 });
 const Power = Loadable({
@@ -67,7 +67,7 @@ const Category = Loadable({
 export {
   Home,
   Login,
-  Register,
+  // Register,
   Dashboard,
   ArticleList,
   // ArticleRich,

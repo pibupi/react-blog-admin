@@ -15,7 +15,7 @@ let initState = {
   displayName,
   isLogin,
   isLoading: false,
-  redirectTo: '', // 完成之后跳到哪里
+  // redirectTo: '', // 完成之后跳到哪里
   type: '', // 用户类型,待开发
   msg: '' // 错误消息
 };
@@ -48,11 +48,11 @@ export default (preState = initState, action) => {
     case actionTypes.REGISTER_SUCCESS:
       newState.msg = action.payload.msg;
       newState.displayName = action.payload.displayName;
-      newState.redirectTo = '/login';
+      // newState.redirectTo = '/login';
       return newState;
     case actionTypes.REGISTER_FAILED:
       newState.msg = action.payload;
-      newState.redirectTo = '';
+      // newState.redirectTo = '';
       return newState;
     default:
       return preState;
