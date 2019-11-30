@@ -55,7 +55,7 @@ class ArticleList extends Component {
         },
         {
           title: '作者',
-          dataIndexd: 'author'
+          dataIndex: 'author'
         },
         {
           title: '操作',

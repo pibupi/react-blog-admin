@@ -54,7 +54,8 @@ export const addArticleAction = article => {
         desc: article.desc,
         url,
         category_name: article.category_name,
-        category_id: article.category_id
+        category_id: article.category_id,
+        author: article.author
       };
       const { code, msg } = await $http.post(
         '/api/v1/admin/article/add',

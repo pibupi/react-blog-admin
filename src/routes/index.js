@@ -1,7 +1,7 @@
 import {
   Home,
   Login,
-  Register,
+  // Register,
   Dashboard,
   ArticleList,
   Simplemde,
@@ -21,10 +21,10 @@ const mainRoutes = [
     pathname: '/login',
     component: Login
   },
-  {
-    pathname: '/register',
-    component: Register
-  },
+  // {
+  //   pathname: '/register',
+  //   component: Register
+  // },
   {
     pathname: '/admin',
     component: Home
