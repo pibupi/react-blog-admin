@@ -58,14 +58,17 @@ class ArticleEdit extends Component {
   // 通过formData处理上传图片
   handleUpload = () => {
     let { fileList } = this.state;
-    let formData = new FormData();
-    fileList.forEach(file => {
-      formData.append('image', file);
-    });
-    this.setState({
-      uploading: true
-    });
-    return formData;
+    if(fileList.length>0){
+      let formData = new FormData();
+      fileList.forEach(file => {
+        formData.append('image', file);
+      });
+      this.setState({
+        uploading: true
+      });
+      return formData;
+    }
+    return ''
   };
   // 表单提交
   handleSubmit = e => {
@@ -101,6 +104,7 @@ class ArticleEdit extends Component {
             articlePic: formData,
             author:values.author
           };
+          console.log(params)
           await this.props.addArticleAction(params);
           this.setState({
             fileList: []

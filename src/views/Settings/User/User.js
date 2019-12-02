@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button, Table, Modal, message } from 'antd';
+import { Button, Table, Modal, message, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
 import UserForm from './User-form';
 import {
@@ -8,6 +8,7 @@ import {
   deleteUserAction,
   userUpdateAction
 } from '../../../actions/userAction';
+import './user.less';
 const mapState = state => ({
   msg: state.user.msg
 });
@@ -185,13 +186,26 @@ class User extends Component {
   }
   render() {
     const { addModalStatus, userlist, count, status, userInfo } = this.state;
-    const title = (
-      <Button type="primary" onClick={this.showAddModal}>
-        创建用户
-      </Button>
-    );
+    // const title = (
+    //   <Button type="primary" onClick={this.showAddModal}>
+    //     创建用户
+    //   </Button>
+    // );
     return (
-      <Card title={title}>
+      <div className="user-list-wrap">
+        <Breadcrumb separator="//">
+          <Breadcrumb.Item href="/admin">Home</Breadcrumb.Item>
+          <Breadcrumb.Item>设置</Breadcrumb.Item>
+          <Breadcrumb.Item href="/admin/settings/user">
+            用户管理
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        {/* <Card title={title}> */}
+        <div className="user-add-btn">
+          <Button type="primary" onClick={this.showAddModal}>
+            创建用户
+          </Button>
+        </div>
         <Table
           bordered
           rowKey="id"
@@ -216,7 +230,8 @@ class User extends Component {
             userInfo={userInfo}
           />
         </Modal>
-      </Card>
+        {/* </Card> */}
+      </div>
     );
   }
 }
