@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Input, Modal, Form, Icon, message } from 'antd';
+import { Table, Button, Input, Modal, Form, Icon, message,Breadcrumb } from 'antd';
 import {
   getCategoryListAction,
   deleteCategoryAction,
@@ -173,6 +173,11 @@ class Category extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="category-list-wrap">
+         <Breadcrumb separator="//">
+          <Breadcrumb.Item href="/admin">Home</Breadcrumb.Item>
+          <Breadcrumb.Item >文章管理</Breadcrumb.Item>
+          <Breadcrumb.Item href="/admin/category/categoryList">分类管理</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="category-list-header">
           <Search
             className="category-list-search"

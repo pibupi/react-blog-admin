@@ -47,22 +47,41 @@ export const addArticleAction = article => {
        * @description - {post} /api/v1/upload 文章展示图片上传
        * 先上传图片获取后端返回的url地址，再组合到文章信息参数中，调用添加文章的api添加文章
        */
-      const { url } = await $http.post('/api/v1/upload', article.articlePic);
-      let params = {
-        title: article.title,
-        content: article.content,
-        desc: article.desc,
-        url,
-        category_name: article.category_name,
-        category_id: article.category_id,
-        author: article.author
-      };
-      const { code, msg } = await $http.post(
-        '/api/v1/admin/article/add',
-        params
-      );
-      if (code === 0) {
-        message.success(msg);
+      if(article.articlePic){
+        const { url } = await $http.post('/api/v1/upload', article.articlePic);
+        let params = {
+          title: article.title,
+          content: article.content,
+          desc: article.desc,
+          url,
+          category_name: article.category_name,
+          category_id: article.category_id,
+          author: article.author
+        };
+        const { code, msg } = await $http.post(
+          '/api/v1/admin/article/add',
+          params
+        );
+        if (code === 0) {
+          message.success(msg);
+        }
+      }else{
+        let params = {
+          title: article.title,
+          content: article.content,
+          desc: article.desc,
+          url:'',
+          category_name: article.category_name,
+          category_id: article.category_id,
+          author: article.author
+        };
+        const { code, msg } = await $http.post(
+          '/api/v1/admin/article/add',
+          params
+        );
+        if (code === 0) {
+          message.success(msg);
+        }
       }
     } catch (err) {
       console.log(err);

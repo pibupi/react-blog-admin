@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Button, Input, Tag, message } from 'antd';
+import { Table, Button, Input, Tag, message, Breadcrumb } from 'antd';
 import {
   getArticleListAction,
   deleteArticleAction
@@ -137,6 +137,11 @@ class ArticleList extends Component {
     });
     return (
       <div className="article-list-wrap">
+        <Breadcrumb separator="//">
+          <Breadcrumb.Item href="/admin">Home</Breadcrumb.Item>
+          <Breadcrumb.Item >文章管理</Breadcrumb.Item>
+          <Breadcrumb.Item href="/admin/article/articlelist">文章列表</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="article-list-header">
           {/* 搜索可以添加一个分类查询 */}
           <Search
