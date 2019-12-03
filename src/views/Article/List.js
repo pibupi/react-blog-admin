@@ -11,7 +11,8 @@ const { Search } = Input;
 
 const mapState = state => ({
   articleList: state.article.articleList,
-  count: state.article.count
+  count: state.article.count,
+  auth: state.user.auth
 });
 @connect(mapState, { getArticleListAction, deleteArticleAction })
 class ArticleList extends Component {
@@ -67,7 +68,9 @@ class ArticleList extends Component {
               <Link
                 to={{ pathname: '/admin/article/simplemde', state: { record } }}
               >
-                <Button type="primary">编辑</Button>
+                {
+                  this.props.auth === '2' ? '' : <Button type="primary">编辑</Button>
+                }
               </Link>
               <Button
                 type="danger"
@@ -84,6 +87,10 @@ class ArticleList extends Component {
   }
   // 点击添加按钮跳转到编辑页
   addArticleBtn = () => {
+    if (this.props.auth === '2') {
+      message.warning('权限不足');
+      return;
+    }
     this.props.history.push('/admin/article/simplemde');
   };
   // 根据文章标题搜索文章，后续可增加多条件模糊查询
@@ -104,6 +111,10 @@ class ArticleList extends Component {
   };
   // 删除
   deleteArticle = async id => {
+    if (this.props.auth === '2') {
+      message.warning('权限不足');
+      return;
+    }
     let { code, msg } = await this.props.deleteArticleAction(id);
     if (code === 0) {
       message.success(msg);

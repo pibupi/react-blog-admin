@@ -10,7 +10,8 @@ import {
 } from '../../../actions/userAction';
 import './user.less';
 const mapState = state => ({
-  msg: state.user.msg
+  msg: state.user.msg,
+  auth:state.user.auth
 });
 @connect(mapState, {
   userRegistAction,
@@ -82,6 +83,10 @@ class User extends Component {
   };
   // 编辑用户
   editUser = records => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     this.setState({
       status: 'edit',
       addModalStatus: true,
@@ -91,6 +96,10 @@ class User extends Component {
   };
   // 删除用户
   deleteUser = async id => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     console.log(id);
     let { code, msg } = await this.props.deleteUserAction(id);
     if (code === 0) {
@@ -106,6 +115,10 @@ class User extends Component {
   };
   // 创建/更新用户
   userAdd = () => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     if (this.state.status === 'add') {
       this.form.validateFields(async (err, values) => {
         if (!err) {
