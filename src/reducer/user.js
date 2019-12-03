@@ -17,7 +17,8 @@ let initState = {
   isLoading: false,
   // redirectTo: '', // 完成之后跳到哪里
   type: '', // 用户类型,待开发
-  msg: '' // 错误消息
+  msg: '', // 错误消息
+  auth: localStorage.getItem('auth')
 };
 export default (preState = initState, action) => {
   let newState = { ...preState };
@@ -33,7 +34,8 @@ export default (preState = initState, action) => {
         id,
         isLogin: true,
         isLoading: false,
-        displayName: action.payload.displayName
+        displayName: action.payload.displayName,
+        auth: action.payload.auth
       };
     case actionTypes.LOGINZ_FAILED:
       newState = {

@@ -13,7 +13,8 @@ const { Search } = Input;
 
 const mapState = state => ({
   categoryList: state.category.categoryList,
-  count: state.category.count
+  count: state.category.count,
+  auth: state.user.auth
 });
 @Form.create()
 @connect(mapState, {
@@ -75,6 +76,10 @@ class Category extends Component {
   }
   // 分类编辑
   editCategory = record => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     this.props.form.resetFields();
     this.setState({
       visible: true,
@@ -123,6 +128,10 @@ class Category extends Component {
   };
   // 添加
   addCategoryBtn = () => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     this.setState({
       visible: true,
       form: 'add',
@@ -131,6 +140,10 @@ class Category extends Component {
   };
   // 删除
   deleteCategoryAction = async id => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     let { code, msg } = await this.props.deleteCategoryAction(id);
     if (code === 0) {
       message.success(msg);

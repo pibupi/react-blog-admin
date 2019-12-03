@@ -35,6 +35,8 @@ const loginFailedAction = () => {
   sessionRemoveuserInfo();
   localRemovetoken();
   localRemoveuserInfo();
+  sessionStorage.removeItem('auth')
+  localStorage.removeItem('auth')
   return {
     type: actionTypes.LOGINZ_FAILED
   };
@@ -51,16 +53,18 @@ export const startLoginAction = userInfo => {
       await $http
         .post('/api/v1/admin/user/login', { username, password })
         .then(res => {
-          const { code, token, displayName, username } = res;
+          const { code, token, displayName, username, auth } = res;
           if (code === 0) {
             if (remember) {
+              localStorage.setItem('auth', auth);
               localSavetoken(token);
               localSaveuserInfo({ displayName, username });
             } else {
+              sessionStorage.setItem('auth', auth);
               sessionSavetoken(token);
               sessionSaveuserInfo({ displayName, username });
             }
-            dispatch(loginSuccessAction({ token, displayName }));
+            dispatch(loginSuccessAction({ token, displayName, auth }));
           }
         });
     } catch {

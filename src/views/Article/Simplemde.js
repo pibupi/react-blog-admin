@@ -7,7 +7,7 @@ import SimpleMDE from 'simplemde';
 // import xss from 'xss';
 // import hljs from 'highlight.js';
 import 'simplemde/dist/simplemde.min.css';
-import { Form, Input, Select, Upload, Icon, Button } from 'antd';
+import { Form, Input, Select, Upload, Icon, Button, message } from 'antd';
 import './simplemde.less';
 import {
   addArticleAction,
@@ -58,7 +58,7 @@ class ArticleEdit extends Component {
   // 通过formData处理上传图片
   handleUpload = () => {
     let { fileList } = this.state;
-    if(fileList.length>0){
+    if (fileList.length > 0) {
       let formData = new FormData();
       fileList.forEach(file => {
         formData.append('image', file);
@@ -68,7 +68,7 @@ class ArticleEdit extends Component {
       });
       return formData;
     }
-    return ''
+    return '';
   };
   // 表单提交
   handleSubmit = e => {
@@ -88,7 +88,7 @@ class ArticleEdit extends Component {
             category_name,
             category_id: values.category_id,
             articlePic: formData,
-            author:values.author
+            author: values.author
           };
           await this.props.updateArticleAction(params);
           this.setState({
@@ -102,9 +102,9 @@ class ArticleEdit extends Component {
             category_name,
             category_id: values.category_id,
             articlePic: formData,
-            author:values.author
+            author: values.author
           };
-          console.log(params)
+          console.log(params);
           await this.props.addArticleAction(params);
           this.setState({
             fileList: []
