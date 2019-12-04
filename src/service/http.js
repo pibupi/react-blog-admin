@@ -6,7 +6,7 @@ import { localGettoken } from "../utils/storage";
 
 const $http = axios.create({
   baseURL:
-    process.env.NODE_ENV === "development" ? "http://localhost:5001" : "", // api的base_url
+    process.env.NODE_ENV === "development" ? "http://localhost:5001" : "http://39.105.218.164:5001", // api的base_url
   timeout: 20000 // 请求超时时间
 });
 
