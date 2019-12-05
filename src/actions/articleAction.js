@@ -47,7 +47,7 @@ export const addArticleAction = article => {
        * @description - {post} /api/v1/upload 文章展示图片上传
        * 先上传图片获取后端返回的url地址，再组合到文章信息参数中，调用添加文章的api添加文章
        */
-      if(article.articlePic){
+      if (article.articlePic) {
         const { url } = await $http.post('/api/v1/upload', article.articlePic);
         let params = {
           title: article.title,
@@ -65,12 +65,12 @@ export const addArticleAction = article => {
         if (code === 0) {
           message.success(msg);
         }
-      }else{
+      } else {
         let params = {
           title: article.title,
           content: article.content,
           desc: article.desc,
-          url:'',
+          url: '',
           category_name: article.category_name,
           category_id: article.category_id,
           author: article.author
@@ -126,6 +126,22 @@ export const deleteArticleAction = id => {
     try {
       const res = await $http.post('/api/v1/admin/article/delete', {
         id
+      });
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+/**
+ * @description -{get} /api/v1/admin/articleDetail
+ * @func getArticleDetail - 获取文章详情
+ */
+export const getArticleDetail = params => {
+  return async dispatch => {
+    try {
+      const res = await $http.get('/api/v1/admin/articleDetail', {
+        params
       });
       return res;
     } catch (err) {

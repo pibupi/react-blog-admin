@@ -7,11 +7,12 @@ import SimpleMDE from 'simplemde';
 // import xss from 'xss';
 // import hljs from 'highlight.js';
 import 'simplemde/dist/simplemde.min.css';
-import { Form, Input, Select, Upload, Icon, Button, message } from 'antd';
+import { Form, Input, Select, Upload, Icon, Button } from 'antd';
 import './simplemde.less';
 import {
   addArticleAction,
-  updateArticleAction
+  updateArticleAction,
+  getArticleDetail
 } from '../../actions/articleAction';
 import { $http } from '../../service/http';
 // 此页面待优化：
@@ -42,7 +43,7 @@ const formItemLayout = {
 // );
 
 const mapState = state => ({});
-@connect(mapState, { addArticleAction, updateArticleAction })
+@connect(mapState, { addArticleAction, updateArticleAction, getArticleDetail })
 @Form.create()
 class ArticleEdit extends Component {
   constructor(props) {
@@ -52,7 +53,10 @@ class ArticleEdit extends Component {
     this.state = {
       fileList: [],
       categoryList: [],
-      value: '' // markdown内容
+      value: '', // markdown内容
+      author: '',
+      desc: '',
+      title: ''
     };
   }
   // 通过formData处理上传图片
@@ -79,12 +83,14 @@ class ArticleEdit extends Component {
           item => item.id === values.category_id
         ).category_name;
         const formData = this.handleUpload();
-        if (this.allContent) {
+        // if (this.allContent) {
+        if (this.props.history.location.state) {
           let params = {
             title: values.title,
             desc: values.desc,
             content: this.smde.value(),
-            id: this.allContent.id, // 编辑需要传递id
+            // id: this.allContent.id, // 编辑需要传递id
+            id: this.props.history.location.state.articleId, // 编辑需要传递id
             category_name,
             category_id: values.category_id,
             articlePic: formData,
@@ -104,7 +110,6 @@ class ArticleEdit extends Component {
             articlePic: formData,
             author: values.author
           };
-          console.log(params);
           await this.props.addArticleAction(params);
           this.setState({
             fileList: []
@@ -132,21 +137,36 @@ class ArticleEdit extends Component {
   //     }
   //   });
   // };
-  componentWillMount() {
-    // 此处为判断编辑or添加
+  // hash模式传值没问题，history需要像didmount中那样做
+  // componentWillMount() {
+  //   // 此处为判断编辑or添加
+  //   if (this.props.history.location.state) {
+  //     // const { record } = this.props.history.location.state;
+  //     // this.isUpdate = !!record;
+  //     // this.allContent = record || {};
+  //     // // 如果有值为编辑，把列表页通过路由state传递过来的值赋给markdown的内容
+  //     // this.setState({
+  //     //   value: this.allContent
+  //     //     ? this.allContent.content.props.dangerouslySetInnerHTML.__html
+  //     //     : ''
+  //     // });
+  //   }
+  // }
+  componentDidMount() {
+    // hash模式传值没问题，history需要像didmount中这样做
     if (this.props.history.location.state) {
-      const { record } = this.props.history.location.state;
-      this.isUpdate = !!record;
-      this.allContent = record || {};
-      // 如果有值为编辑，把列表页通过路由state传递过来的值赋给markdown的内容
-      this.setState({
-        value: this.allContent
-          ? this.allContent.content.props.dangerouslySetInnerHTML.__html
-          : ''
+      let params = {
+        article_id: this.props.history.location.state.articleId
+      };
+      this.props.getArticleDetail(params).then(res => {
+        this.smde.value(res.data.article.content);
+        this.setState({
+          title: res.data.article.title,
+          desc: res.data.article.desc,
+          author: res.data.article.author
+        });
       });
     }
-  }
-  componentDidMount() {
     // 初始化markdown编辑器
     this.smde = new SimpleMDE({
       element: document.getElementById('editor').childElementCount,
@@ -174,6 +194,7 @@ class ArticleEdit extends Component {
       };
       $http
         .post('http://localhost:5001/api/v1/upload', formData, config)
+        // .post('http://39.105.218.164:5001/api/v1/upload', formData, config)
         .then(res => {
           // ![](http://) 参照该格式用于显示markdown预览图片
           var urlname = `![](${res.url})`;
@@ -189,7 +210,7 @@ class ArticleEdit extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { fileList } = this.state;
+    const { fileList, title, author, desc } = this.state;
     // 定义上传组件的相关配置
     const props = {
       onRemove: file => {
@@ -228,7 +249,8 @@ class ArticleEdit extends Component {
         >
           <Form.Item label="文章标题" className="edit-form-item">
             {getFieldDecorator('title', {
-              initialValue: this.allContent ? this.allContent.title : '',
+              // initialValue: this.allContent ? this.allContent.title : '',
+              initialValue: title,
               rules: [{ required: true, message: '请输入标题!' }]
             })(
               <Input
@@ -241,7 +263,8 @@ class ArticleEdit extends Component {
           </Form.Item>
           <Form.Item label="文章描述" className="edit-form-item">
             {getFieldDecorator('desc', {
-              initialValue: this.allContent ? this.allContent.desc : '',
+              // initialValue: this.allContent ? this.allContent.desc : '',
+              initialValue: desc,
               rules: [{ required: true, message: '请输入文章描述!' }]
             })(
               <Input
@@ -269,7 +292,8 @@ class ArticleEdit extends Component {
           </Form.Item>
           <Form.Item label="作者" className="edit-form-item">
             {getFieldDecorator('author', {
-              initialValue: this.allContent ? this.allContent.author : '',
+              // initialValue: this.allContent ? this.allContent.author : '',
+              initialValue: author,
               rules: [{ required: true, message: '请填写作者!' }]
             })(
               <Input
@@ -296,7 +320,8 @@ class ArticleEdit extends Component {
               htmlType="submit"
               className="login-form-button"
             >
-              {this.allContent ? '修改' : '添加'}
+              {/* {this.allContent ? '修改' : '添加'} */}
+              {this.props.history.location.state ? '修改' : '添加'}
             </Button>
           </Form.Item>
         </Form>

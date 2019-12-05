@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect

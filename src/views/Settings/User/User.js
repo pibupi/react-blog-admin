@@ -100,7 +100,6 @@ class User extends Component {
       message.warning('权限不足')
       return
     }
-    console.log(id);
     let { code, msg } = await this.props.deleteUserAction(id);
     if (code === 0) {
       message.success(msg);
@@ -108,6 +107,10 @@ class User extends Component {
     }
   };
   showAddModal = () => {
+    if(this.props.auth === '2'){
+      message.warning('权限不足')
+      return
+    }
     this.setState({
       addModalStatus: true,
       userInfo: {}
@@ -115,10 +118,6 @@ class User extends Component {
   };
   // 创建/更新用户
   userAdd = () => {
-    if(this.props.auth === '2'){
-      message.warning('权限不足')
-      return
-    }
     if (this.state.status === 'add') {
       this.form.validateFields(async (err, values) => {
         if (!err) {
