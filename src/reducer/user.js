@@ -35,7 +35,7 @@ export default (preState = initState, action) => {
         isLogin: true,
         isLoading: false,
         displayName: action.payload.displayName,
-        auth: action.payload.auth
+        auth: action.payload.auth+''
       };
     case actionTypes.LOGINZ_FAILED:
       newState = {

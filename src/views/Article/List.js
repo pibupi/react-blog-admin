@@ -36,7 +36,6 @@ class ArticleList extends Component {
           title: '文章描述',
           dataIndex: 'desc'
         },
-        // 分类联表查询待实现
         {
           title: '分类',
           dataIndex: 'category_name',
@@ -62,25 +61,33 @@ class ArticleList extends Component {
           title: '操作',
           key: 'action',
           width: 180,
-          render: (text, record) => (
-            <span>
-              {/* 把当前行数据存储到路由state中，在编辑页用于区分添加/编辑 */}
-              <Link
-                to={{ pathname: '/admin/article/simplemde', state: { record } }}
-              >
-                {
-                  this.props.auth === '2' ? '' : <Button type="primary">编辑</Button>
-                }
-              </Link>
-              <Button
-                type="danger"
-                style={{ marginLeft: 10 }}
-                onClick={() => this.deleteArticle(record.id)}
-              >
-                删除
-              </Button>
-            </span>
-          )
+          render: (text, record) => {
+            return (
+              <span>
+                {/* 把当前行数据存储到路由state中，在编辑页用于区分添加/编辑 */}
+                <Link
+                  // to={{ pathname: '/admin/article/simplemde', state: { record } }}
+                  to={{
+                    pathname: '/admin/article/simplemde',
+                    state: { articleId: record.id }
+                  }}
+                >
+                  {this.props.auth === '2' ? (
+                    ''
+                  ) : (
+                    <Button type="primary">编辑</Button>
+                  )}
+                </Link>
+                <Button
+                  type="danger"
+                  style={{ marginLeft: 10 }}
+                  onClick={() => this.deleteArticle(record.id)}
+                >
+                  删除
+                </Button>
+              </span>
+            );
+          }
         }
       ]
     };
@@ -139,7 +146,6 @@ class ArticleList extends Component {
   }
   render() {
     const { articleList, count } = this.props;
-    console.log(articleList);
     // 对后台返回的富文本内容进行处理
     articleList.forEach(item => {
       item.content = (
@@ -150,8 +156,10 @@ class ArticleList extends Component {
       <div className="article-list-wrap">
         <Breadcrumb separator="//">
           <Breadcrumb.Item href="/admin">Home</Breadcrumb.Item>
-          <Breadcrumb.Item >文章管理</Breadcrumb.Item>
-          <Breadcrumb.Item href="/admin/article/articlelist">文章列表</Breadcrumb.Item>
+          <Breadcrumb.Item>文章管理</Breadcrumb.Item>
+          <Breadcrumb.Item href="/admin/article/articlelist">
+            文章列表
+          </Breadcrumb.Item>
         </Breadcrumb>
         <div className="article-list-header">
           {/* 搜索可以添加一个分类查询 */}
