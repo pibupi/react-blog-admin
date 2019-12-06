@@ -2,7 +2,7 @@ import {
   Home,
   Login,
   // Register,
-  Dashboard,
+  // Dashboard,
   ArticleList,
   Simplemde,
   // ArticleRich,
@@ -36,17 +36,17 @@ const mainRoutes = [
 ];
 // 动态路由
 const adminRoutes = [
-  {
-    pathname: '/admin/dashboard',
-    title: '仪表盘',
-    icon: 'dashboard',
-    component: Dashboard,
-    isNav: true,
-    key: '/admin/dashboard'
-  },
+  // {
+  //   pathname: '/admin/dashboard',
+  //   title: '数据统计',
+  //   icon: 'dashboard',
+  //   component: Dashboard,
+  //   isNav: true,
+  //   key: '/admin/dashboard'
+  // },
   {
     pathname: '/admin/article',
-    title: '文章管理',
+    title: '项目管理',
     icon: 'unordered-list',
     exact: true,
     isNav: true,
@@ -88,12 +88,12 @@ const adminRoutes = [
       //   key: '/admin/article/for-edit'
       // },
       {
-        pathname: '/admin/category/categoryList',
+        pathname: '/admin/article/categoryList',
         component: Category,
         title: '分类管理',
         icon: 'edit',
         isNav: true,
-        key: '/admin/category'
+        key: '/admin/article/category'
       }
     ]
   },
