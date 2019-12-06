@@ -95,22 +95,41 @@ export const addArticleAction = article => {
 export const updateArticleAction = article => {
   return async dispatch => {
     try {
-      const { url } = await $http.post('/api/v1/upload', article.articlePic);
-      let params = {
-        id: article.id,
-        title: article.title,
-        content: article.content,
-        desc: article.desc,
-        url,
-        category_name: article.category_name,
-        category_id: article.category_id
-      };
-      const { code, msg } = await $http.post(
-        '/api/v1/admin/article/update',
-        params
-      );
-      if (code === 0) {
-        message.success(msg);
+      if(article.articlePic){
+        const { url } = await $http.post('/api/v1/upload', article.articlePic);
+        let params = {
+          id: article.id,
+          title: article.title,
+          content: article.content,
+          desc: article.desc,
+          url,
+          category_name: article.category_name,
+          category_id: article.category_id
+        };
+        const { code, msg } = await $http.post(
+          '/api/v1/admin/article/update',
+          params
+        );
+        if (code === 0) {
+          message.success(msg);
+        }
+      }else{
+        let params = {
+          id: article.id,
+          title: article.title,
+          content: article.content,
+          desc: article.desc,
+          url:'',
+          category_name: article.category_name,
+          category_id: article.category_id
+        };
+        const { code, msg } = await $http.post(
+          '/api/v1/admin/article/update',
+          params
+        );
+        if (code === 0) {
+          message.success(msg);
+        }
       }
     } catch (err) {
       console.log(err);
