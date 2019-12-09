@@ -19,7 +19,6 @@ class Edit3 extends Component {
 
   addImg($file) {
     this.$vm.current.$img2Url($file.name, 'file_url');
-    console.log($file);
     var formData = new FormData();
     formData.append('image', $file);
     // var config = {
@@ -32,7 +31,6 @@ class Edit3 extends Component {
       // ![](http://)
       // ↵[](http://localhost:5001/upload/image-1574084685492.png)↵
       // this.smde.value(`${this.content}\n${urlname}\n`)
-      console.log(res.url);
       this.$vm.current.$img2Url($file.name, res.url);
     });
   }

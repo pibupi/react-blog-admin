@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Input, Icon, Select, Button } from 'antd';
-const { Option } = Select;
+import { Form, Input, Icon } from 'antd';
 @Form.create()
 class UserForm extends Component {
-  // 把值传递给父组件
+  // 把值传递给父组件F
   componentWillMount() {
     this.props.getFormValue(this.props.form);
   }
@@ -47,7 +46,9 @@ class UserForm extends Component {
           })(
             <Input
               style={{ width: '87%', height: '40px' }}
-              prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={
+                <Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />
+              }
               placeholder="邮箱"
             />
           )}
@@ -59,7 +60,9 @@ class UserForm extends Component {
           })(
             <Input
               style={{ width: '87%', height: '40px' }}
-              prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={
+                <Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />
+              }
               placeholder="电话"
             />
           )}

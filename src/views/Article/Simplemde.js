@@ -7,7 +7,7 @@ import SimpleMDE from 'simplemde';
 // import xss from 'xss';
 // import hljs from 'highlight.js';
 import 'simplemde/dist/simplemde.min.css';
-import { Form, Input, Select, Upload, Icon, Button } from 'antd';
+import { Form, Input, Select, Upload, Icon, Button, Switch } from 'antd';
 import './simplemde.less';
 import {
   addArticleAction,
@@ -56,7 +56,8 @@ class ArticleEdit extends Component {
       value: '', // markdown内容
       author: '',
       desc: '',
-      title: ''
+      title: '',
+      privates: true
     };
   }
   // 通过formData处理上传图片
@@ -94,7 +95,8 @@ class ArticleEdit extends Component {
             category_name,
             category_id: values.category_id,
             articlePic: formData,
-            author: values.author
+            author: values.author,
+            privates: this.state.privates
           };
           await this.props.updateArticleAction(params);
           this.setState({
@@ -108,7 +110,8 @@ class ArticleEdit extends Component {
             category_name,
             category_id: values.category_id,
             articlePic: formData,
-            author: values.author
+            author: values.author,
+            privates: this.state.privates
           };
           await this.props.addArticleAction(params);
           this.setState({
@@ -163,7 +166,8 @@ class ArticleEdit extends Component {
         this.setState({
           title: res.data.article.title,
           desc: res.data.article.desc,
-          author: res.data.article.author
+          author: res.data.article.author,
+          privates: res.data.article.privates
         });
       });
     }
@@ -208,9 +212,14 @@ class ArticleEdit extends Component {
       });
     });
   }
+  togglePrivate = (checked, event) => {
+    this.setState({
+      privates: !this.state.privates
+    });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { fileList, title, author, desc } = this.state;
+    const { fileList, title, author, desc, privates } = this.state;
     // 定义上传组件的相关配置
     const props = {
       onRemove: file => {
@@ -310,6 +319,20 @@ class ArticleEdit extends Component {
                 <Icon type="upload" /> 上传图片
               </Button>
             </Upload>
+          </Form.Item>
+          <Form.Item label="私密" className="edit-form-item">
+            {getFieldDecorator('privates', {
+              // initialValue: this.allContent ? this.allContent.author : '',
+              initialValue: privates
+              // rules: [{ required: true, message: '请填写作者!' }]
+            })(
+              <Switch
+                checkedChildren={<Icon type="check" />}
+                unCheckedChildren={<Icon type="close" />}
+                checked={this.state.privates}
+                onClick={(checked, event) => this.togglePrivate(checked, event)}
+              />
+            )}
           </Form.Item>
           <h3 className="article-edit-title">文章内容</h3>
           {/* markdown编辑器容器 */}
