@@ -56,7 +56,8 @@ export const addArticleAction = article => {
           url,
           category_name: article.category_name,
           category_id: article.category_id,
-          author: article.author
+          author: article.author,
+          privates: article.privates
         };
         const { code, msg } = await $http.post(
           '/api/v1/admin/article/add',
@@ -73,7 +74,8 @@ export const addArticleAction = article => {
           url: '',
           category_name: article.category_name,
           category_id: article.category_id,
-          author: article.author
+          author: article.author,
+          privates: article.privates
         };
         const { code, msg } = await $http.post(
           '/api/v1/admin/article/add',
@@ -95,7 +97,7 @@ export const addArticleAction = article => {
 export const updateArticleAction = article => {
   return async dispatch => {
     try {
-      if(article.articlePic){
+      if (article.articlePic) {
         const { url } = await $http.post('/api/v1/upload', article.articlePic);
         let params = {
           id: article.id,
@@ -104,7 +106,8 @@ export const updateArticleAction = article => {
           desc: article.desc,
           url,
           category_name: article.category_name,
-          category_id: article.category_id
+          category_id: article.category_id,
+          privates: article.privates
         };
         const { code, msg } = await $http.post(
           '/api/v1/admin/article/update',
@@ -113,15 +116,16 @@ export const updateArticleAction = article => {
         if (code === 0) {
           message.success(msg);
         }
-      }else{
+      } else {
         let params = {
           id: article.id,
           title: article.title,
           content: article.content,
           desc: article.desc,
-          url:'',
+          url: '',
           category_name: article.category_name,
-          category_id: article.category_id
+          category_id: article.category_id,
+          privates: article.privates
         };
         const { code, msg } = await $http.post(
           '/api/v1/admin/article/update',

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
-import { PubHeader, PubFooter, PubSideBar } from '../../components';
+import { PubHeader, PubSideBar } from '../../components';
 import './home.less';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const mapState = state => ({
   isLogin: state.user.isLogin
@@ -19,7 +19,7 @@ class Home extends Component {
       return <Redirect to="/login" />;
     }
     return (
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout style={{ height: '100%' }}>
         <Header style={{ backgroundColor: '#eee' }}>
           <PubHeader />
         </Header>
@@ -29,9 +29,9 @@ class Home extends Component {
           </Sider>
           <Content>{this.props.children}</Content>
         </Layout>
-        <Footer>
+        {/* <Footer>
           <PubFooter />
-        </Footer>
+        </Footer> */}
       </Layout>
     );
   }

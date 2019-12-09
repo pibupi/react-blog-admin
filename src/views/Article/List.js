@@ -58,6 +58,13 @@ class ArticleList extends Component {
           dataIndex: 'author'
         },
         {
+          title: '私密',
+          dataIndex: 'privates',
+          render: (text, record) => {
+            return <span>{record.privates ? '私密' : '非私密'}</span>;
+          }
+        },
+        {
           title: '操作',
           key: 'action',
           width: 180,
