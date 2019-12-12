@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Input, Modal, Form, Icon, message,Breadcrumb } from 'antd';
+import {
+  Table,
+  Button,
+  Input,
+  Modal,
+  Form,
+  Icon,
+  message,
+  Breadcrumb
+} from 'antd';
 import {
   getCategoryListAction,
   deleteCategoryAction,
@@ -76,9 +85,9 @@ class Category extends Component {
   }
   // 分类编辑
   editCategory = record => {
-    if(this.props.auth === '2'){
-      message.warning('权限不足')
-      return
+    if (this.props.auth === '2') {
+      message.warning('权限不足');
+      return;
     }
     this.props.form.resetFields();
     this.setState({
@@ -128,9 +137,9 @@ class Category extends Component {
   };
   // 添加
   addCategoryBtn = () => {
-    if(this.props.auth === '2'){
-      message.warning('权限不足')
-      return
+    if (this.props.auth === '2') {
+      message.warning('权限不足');
+      return;
     }
     this.setState({
       visible: true,
@@ -140,9 +149,9 @@ class Category extends Component {
   };
   // 删除
   deleteCategoryAction = async id => {
-    if(this.props.auth === '2'){
-      message.warning('权限不足')
-      return
+    if (this.props.auth === '2') {
+      message.warning('权限不足');
+      return;
     }
     let { code, msg } = await this.props.deleteCategoryAction(id);
     if (code === 0) {
@@ -186,10 +195,12 @@ class Category extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="category-list-wrap">
-         <Breadcrumb separator="//">
+        <Breadcrumb separator="//">
           <Breadcrumb.Item href="/admin">Home</Breadcrumb.Item>
-          <Breadcrumb.Item >文章管理</Breadcrumb.Item>
-          <Breadcrumb.Item href="/admin/category/categoryList">分类管理</Breadcrumb.Item>
+          <Breadcrumb.Item>文章管理</Breadcrumb.Item>
+          <Breadcrumb.Item href="/admin/category/categoryList">
+            分类管理
+          </Breadcrumb.Item>
         </Breadcrumb>
         <div className="category-list-header">
           <Search

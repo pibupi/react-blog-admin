@@ -61,7 +61,7 @@ const Notification = Loadable({
   loading: Loading
 });
 const Category = Loadable({
-  loader: () => import('./Category'),
+  loader: () => import('./Category/index'),
   loading: Loading
 });
 export {
