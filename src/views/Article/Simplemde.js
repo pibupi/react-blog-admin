@@ -197,8 +197,8 @@ class ArticleEdit extends Component {
         }
       };
       $http
-        .post('http://localhost:5001/api/v1/upload', formData, config)
-        // .post('http://39.105.218.164:5001/api/v1/upload', formData, config)
+        // .post('http://localhost:5001/api/v1/upload', formData, config)
+        .post('http://39.105.218.164:5001/api/v1/upload', formData, config)
         .then(res => {
           // ![](http://) 参照该格式用于显示markdown预览图片
           var urlname = `![](${res.url})`;
