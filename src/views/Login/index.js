@@ -46,7 +46,7 @@ class Login extends Component {
     return (
       <div className="login-page">
         <div className="login-wrap">
-          <p className="login-title">账户密码登录</p>
+          {/* <p className="login-title">账户密码登录</p> */}
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
               {getFieldDecorator('username', {
@@ -88,6 +88,7 @@ class Login extends Component {
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"
+                  size="large"
                 >
                   登录
                 </Button>

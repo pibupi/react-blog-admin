@@ -42,7 +42,8 @@ class Header extends Component {
           <div className="pub-header-usersetting">
             <Dropdown overlay={this.renderDropdown} trigger={['click']}>
               <div>
-                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                {/* <Avatar src="../../assets/images/github.png" /> */}
+                {/* <img src="../../assets/images/github.png" alt="头像" /> */}
                 <span className="welcome">
                   欢迎您！, <span> {displayName} </span>
                 </span>
