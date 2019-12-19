@@ -26,6 +26,11 @@ const Simplemde = Loadable({
   loader: () => import('./Article/Simplemde'),
   loading: Loading
 });
+// 新增的
+// const AddArticle = Loadable({
+//   loader: () => import('./Article/Add-article'),
+//   loading: Loading
+// })
 // 富文本
 // const ArticleRich = Loadable({
 //   loader: () => import('./Article/Rich'),
@@ -72,6 +77,7 @@ export {
   ArticleList,
   // ArticleRich,
   Simplemde,
+  // AddArticle,
   // ForEdit,
   Role,
   User,

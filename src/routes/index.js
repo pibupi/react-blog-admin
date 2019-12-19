@@ -5,6 +5,7 @@ import {
   Dashboard,
   ArticleList,
   Simplemde,
+  // AddArticle,
   // ArticleRich,
   // ForEdit, // for-edit 测试编辑器
   User,
@@ -69,6 +70,14 @@ const adminRoutes = [
         isNav: false,
         key: '/admin/article/simplemde'
       },
+      // {
+      //   pathname: '/admin/article/simplemde',
+      //   component: AddArticle,
+      //   title: '文章编辑',
+      //   icon: 'edit',
+      //   isNav: false,
+      //   key: '/admin/article/simplemde'
+      // },
       // 富文本
       // {
       //   pathname: '/admin/article/rich',
