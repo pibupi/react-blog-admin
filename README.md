@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 项目介绍
+* react-blog-admin为博客后台管理系统
+* 前后端分离项目
+* 文章功能支持markdown方式编写及展示
+### 技术栈
+* React全家桶
+* Axios
+* Less
+* Ant Design
+* Eslint + Prettier
+### 预览
 
-## Available Scripts
+### 已实现功能
 
-In the project directory, you can run:
+[x] 登录
+[x] 文章管理
+[x] 标签管理
+[x] 用户管理
+[x] markdown编辑器
+[x] 私密文章
+### 待实现功能
 
-### `yarn start`
+[] 留言管理
+[] 评论管理
+[] 个人中心
+[] 七牛
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+项目启动
+```
+git clone git@github.com:zhanghe888/react-blog-admin.git
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+cd react-blog-admin
 
-### `yarn test`
+npm install
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+npm start
+```
+### 项目结构
+```
+react-blog-admin
 
-### `yarn build`
+├─ lessThemeVars.js    // Ant Design主题文件
+├─ .gitignore          // git忽略文件
+├─ src
+│    ├─ action         // action
+│    ├─ assets         // 静态资源
+│    ├─ components     // 公共组件
+│    ├─ rducer         // reduer
+│    ├─ routes         // 路由表
+│    ├─ service        // axios封装
+│    └─ utils          // 常用工具
+│    └─ views          // 业务模块
+└─ config-overrides.js // webpack配置文件
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### 未来
+* 采用webpack4+，从头到尾配置工程环境，加入TypeScript重构此项目
