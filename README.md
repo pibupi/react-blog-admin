@@ -54,4 +54,6 @@ react-blog-admin
 ```
 
 ### 未来
-* 采用webpack4+，从头到尾配置工程环境，加入TypeScript重构此项目
+* 采用webpack4+，从头到尾手动配置工程环境
+* 加入TypeScript
+* 采用React Hooks新特性
